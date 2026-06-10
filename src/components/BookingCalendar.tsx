@@ -1,0 +1,359 @@
+import { useMemo, useState } from "react";
+import { HudCorners } from "@/components/HudCorners";
+
+const HU_MONTHS = [
+  "Január", "Február", "Március", "Április", "Május", "Június",
+  "Július", "Augusztus", "Szeptember", "Október", "November", "December",
+];
+const HU_DOW = ["H", "K", "Sz", "Cs", "P", "Sz", "V"];
+
+const TIME_SLOTS = [
+  { t: "09:00", status: "open" },
+  { t: "11:00", status: "open" },
+  { t: "13:00", status: "hot" },
+  { t: "15:00", status: "open" },
+  { t: "17:00", status: "locked" },
+  { t: "19:00", status: "open" },
+];
+
+const PACKAGES = [
+  { code: "PKG-01", name: "Squad Drop" },
+  { code: "PKG-02", name: "Stag Mission" },
+  { code: "PKG-03", name: "Corp Recon" },
+];
+
+function monthGrid(year: number, month: number) {
+  const first = new Date(year, month, 1);
+  const startDow = (first.getDay() + 6) % 7; // Mon=0
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const cells: Array<{ day: number | null; date: Date | null }> = [];
+  for (let i = 0; i < startDow; i++) cells.push({ day: null, date: null });
+  for (let d = 1; d <= daysInMonth; d++) {
+    cells.push({ day: d, date: new Date(year, month, d) });
+  }
+  while (cells.length % 7 !== 0) cells.push({ day: null, date: null });
+  return cells;
+}
+
+export function BookingCalendar() {
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+  const [cursor, setCursor] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
+  const [selected, setSelected] = useState<Date | null>(null);
+  const [slot, setSlot] = useState<string | null>(null);
+  const [pkg, setPkg] = useState<string>("PKG-02");
+  const [squad, setSquad] = useState(8);
+
+  const cells = useMemo(
+    () => monthGrid(cursor.getFullYear(), cursor.getMonth()),
+    [cursor],
+  );
+
+  const nav = (delta: number) => {
+    const n = new Date(cursor.getFullYear(), cursor.getMonth() + delta, 1);
+    setCursor(n);
+    setSelected(null);
+    setSlot(null);
+  };
+
+  // Deterministic "load" per date — visual only
+  const dayStatus = (d: Date) => {
+    const k = d.getDate() + d.getMonth() * 31;
+    if (d < today) return "past";
+    const r = (k * 13) % 10;
+    if (r < 1) return "full";
+    if (r < 4) return "hot";
+    return "open";
+  };
+
+  const isSelected = (d: Date | null) =>
+    !!(d && selected && d.getTime() === selected.getTime());
+
+  return (
+    <section id="booking" className="relative border-t border-hud/20 py-28">
+      <div className="pointer-events-none absolute inset-0 hud-grid opacity-25" aria-hidden />
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className="label-mono mb-4">// SCHED · MISSION TIMESLOT</div>
+        <h2 className="font-display text-4xl font-bold uppercase text-cream sm:text-6xl">
+          Foglalj <span className="text-hud">bevetési időt</span>
+        </h2>
+        <p className="mt-4 max-w-xl font-mono text-xs uppercase tracking-[0.2em] text-cream-dim">
+          Válassz dátumot · idősávot · csomagot — a többit a HQ kezeli.
+        </p>
+
+        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
+          {/* ===================== CALENDAR PANEL ===================== */}
+          <div className="hud-corners-4 relative border border-hud/30 bg-surface/50 p-6 sm:p-8">
+            <HudCorners />
+
+            {/* top telemetry */}
+            <div className="mb-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.3em]">
+              <span className="flex items-center gap-2 text-hud">
+                <span className="h-1.5 w-1.5 animate-hud-pulse rounded-full bg-hud" />
+                CAL · ONLINE
+              </span>
+              <span className="text-cream-dim">SYNC · LIVE FEED</span>
+            </div>
+
+            {/* month nav */}
+            <div className="flex items-center justify-between border-y border-hud/20 py-4">
+              <button
+                onClick={() => nav(-1)}
+                data-hover
+                className="grid h-9 w-9 place-items-center border border-hud/40 font-mono text-hud transition hover:bg-hud/10"
+                aria-label="Előző hónap"
+              >
+                ‹
+              </button>
+              <div className="text-center">
+                <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream-dim">
+                  Hónap · MO_{String(cursor.getMonth() + 1).padStart(2, "0")}
+                </div>
+                <div className="font-display text-2xl font-bold uppercase tracking-wider text-cream sm:text-3xl">
+                  {HU_MONTHS[cursor.getMonth()]}{" "}
+                  <span className="text-hud">{cursor.getFullYear()}</span>
+                </div>
+              </div>
+              <button
+                onClick={() => nav(1)}
+                data-hover
+                className="grid h-9 w-9 place-items-center border border-hud/40 font-mono text-hud transition hover:bg-hud/10"
+                aria-label="Következő hónap"
+              >
+                ›
+              </button>
+            </div>
+
+            {/* dow header */}
+            <div className="mt-6 grid grid-cols-7 gap-1 sm:gap-2">
+              {HU_DOW.map((d, i) => (
+                <div
+                  key={i}
+                  className={`py-2 text-center font-mono text-[10px] uppercase tracking-[0.25em] ${
+                    i >= 5 ? "text-hud" : "text-cream-dim"
+                  }`}
+                >
+                  {d}
+                </div>
+              ))}
+            </div>
+
+            {/* day grid */}
+            <div className="grid grid-cols-7 gap-1 sm:gap-2">
+              {cells.map((c, i) => {
+                if (!c.date) {
+                  return (
+                    <div
+                      key={i}
+                      className="aspect-square border border-transparent bg-background/20"
+                    />
+                  );
+                }
+                const st = dayStatus(c.date);
+                const sel = isSelected(c.date);
+                const isToday = c.date.getTime() === today.getTime();
+                const disabled = st === "past" || st === "full";
+                return (
+                  <button
+                    key={i}
+                    disabled={disabled}
+                    data-hover={!disabled || undefined}
+                    onClick={() => {
+                      setSelected(c.date);
+                      setSlot(null);
+                    }}
+                    className={[
+                      "group relative aspect-square border font-mono text-sm transition-all",
+                      sel
+                        ? "border-hud bg-hud text-background shadow-[0_0_20px_-4px_rgba(244,161,29,0.7)]"
+                        : disabled
+                          ? "cursor-not-allowed border-hud/10 bg-background/30 text-cream-dim/30"
+                          : "border-hud/25 bg-background/40 text-cream hover:border-hud hover:bg-hud/10",
+                    ].join(" ")}
+                  >
+                    {/* corner ticks on selected */}
+                    {sel && (
+                      <>
+                        <span className="absolute left-0 top-0 h-1.5 w-1.5 border-l border-t border-background" />
+                        <span className="absolute right-0 top-0 h-1.5 w-1.5 border-r border-t border-background" />
+                        <span className="absolute bottom-0 left-0 h-1.5 w-1.5 border-b border-l border-background" />
+                        <span className="absolute bottom-0 right-0 h-1.5 w-1.5 border-b border-r border-background" />
+                      </>
+                    )}
+                    <span className="absolute left-1 top-1 text-[10px] opacity-70">
+                      {c.day}
+                    </span>
+                    {/* status indicator */}
+                    {!sel && st !== "past" && (
+                      <span
+                        className={[
+                          "absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full",
+                          st === "open" ? "bg-hud" : "",
+                          st === "hot" ? "bg-hud animate-hud-pulse" : "",
+                          st === "full" ? "bg-cream-dim/30" : "",
+                        ].join(" ")}
+                      />
+                    )}
+                    {isToday && !sel && (
+                      <span className="absolute inset-0 border border-hud/60" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* legend */}
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-hud/15 pt-4 font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim">
+              <span className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-hud" /> Szabad
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 animate-hud-pulse rounded-full bg-hud" /> Telik
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-cream-dim/40" /> Megtelt
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="h-3 w-3 border border-hud/60" /> Ma
+              </span>
+            </div>
+          </div>
+
+          {/* ===================== MISSION PANEL ===================== */}
+          <div className="hud-corners-4 relative border border-hud/30 bg-surface/50 p-6 sm:p-8">
+            <HudCorners />
+
+            <div className="mb-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.3em]">
+              <span className="text-hud">// MISSION PARAMS</span>
+              <span className="text-cream-dim">ID · TG-{String(Date.now()).slice(-5)}</span>
+            </div>
+
+            {/* selected date readout */}
+            <div className="relative border border-hud/25 bg-background/40 p-4">
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream-dim">
+                Kijelölt dátum
+              </div>
+              <div className="mt-1 font-display text-xl font-bold uppercase text-cream">
+                {selected
+                  ? `${selected.getFullYear()}. ${HU_MONTHS[selected.getMonth()]} ${selected.getDate()}.`
+                  : "— válassz a naptárból —"}
+              </div>
+              <div className="mt-2 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-hud">
+                <span className="h-1 w-1 animate-hud-pulse rounded-full bg-hud" />
+                {selected ? "TARGET LOCKED" : "AWAITING TARGET"}
+              </div>
+            </div>
+
+            {/* time slots */}
+            <div className="mt-6">
+              <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em] text-hud">
+                Idősáv
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {TIME_SLOTS.map((s) => {
+                  const dis = !selected || s.status === "locked";
+                  const sel = slot === s.t;
+                  return (
+                    <button
+                      key={s.t}
+                      disabled={dis}
+                      data-hover={!dis || undefined}
+                      onClick={() => setSlot(s.t)}
+                      className={[
+                        "relative border py-2.5 font-mono text-xs tracking-wider transition",
+                        sel
+                          ? "border-hud bg-hud text-background"
+                          : dis
+                            ? "cursor-not-allowed border-hud/10 text-cream-dim/30"
+                            : "border-hud/30 text-cream hover:border-hud hover:bg-hud/10",
+                      ].join(" ")}
+                    >
+                      {s.t}
+                      {s.status === "hot" && !sel && !dis && (
+                        <span className="absolute right-1 top-1 h-1 w-1 animate-hud-pulse rounded-full bg-hud" />
+                      )}
+                      {s.status === "locked" && (
+                        <span className="absolute right-1 top-1 font-mono text-[8px] text-cream-dim/50">
+                          ✕
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* package */}
+            <div className="mt-6">
+              <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em] text-hud">
+                Csomag
+              </div>
+              <div className="grid grid-cols-1 gap-2">
+                {PACKAGES.map((p) => {
+                  const sel = pkg === p.code;
+                  return (
+                    <button
+                      key={p.code}
+                      data-hover
+                      onClick={() => setPkg(p.code)}
+                      className={[
+                        "flex items-center justify-between border px-3 py-2.5 font-mono text-xs uppercase tracking-[0.2em] transition",
+                        sel
+                          ? "border-hud bg-hud/10 text-cream"
+                          : "border-hud/25 text-cream-dim hover:border-hud/60 hover:text-cream",
+                      ].join(" ")}
+                    >
+                      <span className="flex items-center gap-3">
+                        <span
+                          className={`h-2 w-2 ${sel ? "bg-hud" : "border border-hud/40"}`}
+                        />
+                        {p.name}
+                      </span>
+                      <span className="text-hud">{p.code}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* squad size */}
+            <div className="mt-6">
+              <div className="mb-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.3em]">
+                <span className="text-hud">Csapatlétszám</span>
+                <span className="text-cream">{squad} fő</span>
+              </div>
+              <input
+                type="range"
+                min={4}
+                max={40}
+                step={1}
+                value={squad}
+                onChange={(e) => setSquad(Number(e.target.value))}
+                className="hud-range w-full"
+              />
+              <div className="mt-1 flex justify-between font-mono text-[9px] uppercase tracking-[0.3em] text-cream-dim">
+                <span>4</span><span>20</span><span>40</span>
+              </div>
+            </div>
+
+            {/* deploy */}
+            <button
+              disabled={!selected || !slot}
+              data-hover={selected && slot ? true : undefined}
+              className="btn-deploy mt-8 w-full justify-center disabled:opacity-40"
+            >
+              <span className="font-mono text-[10px] opacity-70">›››</span>
+              {selected && slot ? "Bevetés foglalása" : "Válassz dátumot + időt"}
+            </button>
+            <div className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.3em] text-cream-dim">
+              Visszaigazolás · 24 órán belül
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
