@@ -233,3 +233,31 @@
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   .reveal { opacity: 1; transform: none; filter: none; }
 }
+
+/* tactical range slider */
+.hud-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  background: linear-gradient(to right, var(--hud) 0%, var(--hud) 50%, oklch(0.78 0.17 65 / 0.2) 50%, oklch(0.78 0.17 65 / 0.2) 100%);
+  outline: none;
+}
+.hud-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px; height: 14px;
+  background: var(--hud);
+  border: 2px solid var(--background);
+  box-shadow: 0 0 12px oklch(0.78 0.17 65 / 0.7);
+  cursor: pointer;
+  border-radius: 0;
+  transform: rotate(45deg);
+}
+.hud-range::-moz-range-thumb {
+  width: 14px; height: 14px;
+  background: var(--hud);
+  border: 2px solid var(--background);
+  box-shadow: 0 0 12px oklch(0.78 0.17 65 / 0.7);
+  cursor: pointer;
+  border-radius: 0;
+}
