@@ -9,7 +9,7 @@ export function Reveal({
   delay?: number;
   className?: string;
 }) {
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -27,5 +27,5 @@ export function Reveal({
     io.observe(el);
     return () => io.disconnect();
   }, [delay]);
-  return <div ref={ref as React.RefObject<HTMLDivElement>} className={`reveal ${className}`}>{children}</div>;
+  return <div ref={ref} className={`reveal ${className}`}>{children}</div>;
 }
