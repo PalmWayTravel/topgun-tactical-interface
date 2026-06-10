@@ -76,7 +76,7 @@ function Header() {
             </a>
           ))}
         </nav>
-        <a href="#contact" className="btn-deploy text-[11px]">
+        <a href="#booking" className="btn-deploy text-[11px]">
           <span className="h-1.5 w-1.5 rounded-full bg-background animate-hud-pulse" />
           Foglalás
         </a>
@@ -160,7 +160,7 @@ function Hero() {
         </Reveal>
         <Reveal delay={520}>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
-            <a href="#contact" className="btn-deploy">
+            <a href="#booking" className="btn-deploy">
               <span className="font-mono text-[10px] opacity-70">›››</span>
               Deploy · Foglalás
             </a>
@@ -325,7 +325,7 @@ function Packages() {
                   ))}
                 </ul>
                 <a
-                  href="#contact"
+                  href="#booking"
                   className={`mt-8 inline-flex items-center justify-center gap-2 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.25em] transition ${
                     p.featured
                       ? "bg-hud text-background hover:brightness-110"
@@ -439,7 +439,7 @@ function Kids() {
                 <li key={x} className="flex items-center gap-2"><span className="h-1.5 w-1.5 bg-hud" />{x}</li>
               ))}
             </ul>
-            <a href="#contact" className="btn-deploy mt-10">Gyerekprogram foglalás ›</a>
+            <a href="#booking" className="btn-deploy mt-10">Gyerekprogram foglalás ›</a>
           </div>
         </Reveal>
       </div>
