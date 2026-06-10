@@ -4,12 +4,10 @@ export function Reveal({
   children,
   delay = 0,
   className = "",
-  as: Tag = "div",
 }: {
   children: ReactNode;
   delay?: number;
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
 }) {
   const ref = useRef<HTMLElement>(null);
   useEffect(() => {
@@ -29,6 +27,5 @@ export function Reveal({
     io.observe(el);
     return () => io.disconnect();
   }, [delay]);
-  // @ts-expect-error dynamic tag ref
-  return <Tag ref={ref} className={`reveal ${className}`}>{children}</Tag>;
+  return <div ref={ref as React.RefObject<HTMLDivElement>} className={`reveal ${className}`}>{children}</div>;
 }
