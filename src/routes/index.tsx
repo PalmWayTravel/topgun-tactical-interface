@@ -11,6 +11,7 @@ import g3 from "@/assets/gallery-3.jpg";
 import g4 from "@/assets/gallery-4.jpg";
 import g5 from "@/assets/gallery-5.jpg";
 import kidsImg from "@/assets/kids.jpg";
+import { BookingCalendar } from "@/components/BookingCalendar";
 
 export const Route = createFileRoute("/")({
   component: TopGunPage,
@@ -619,6 +620,7 @@ function TopGunPage() {
         <Kids />
         <Location />
         <Reviews />
+        <BookingCalendar />
         <Contact />
       </main>
       <Footer />
