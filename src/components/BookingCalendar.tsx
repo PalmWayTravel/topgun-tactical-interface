@@ -46,6 +46,15 @@ export function BookingCalendar() {
   const [slot, setSlot] = useState<string | null>(null);
   const [pkg, setPkg] = useState<string>("PKG-02");
   const [squad, setSquad] = useState(8);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const phoneValid = phone.trim().replace(/[^\d]/g, "").length >= 7;
+  const nameValid = name.trim().length >= 2;
+  const contactValid = nameValid && emailValid && phoneValid;
+  const canDeploy = !!selected && !!slot && contactValid;
 
   const cells = useMemo(
     () => monthGrid(cursor.getFullYear(), cursor.getMonth()),
@@ -339,14 +348,62 @@ export function BookingCalendar() {
               </div>
             </div>
 
+            {/* operator contact */}
+            <div className="mt-6 border-t border-hud/15 pt-6">
+              <div className="mb-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.3em]">
+                <span className="text-hud">// Operátor azonosító</span>
+                <span className={contactValid ? "text-hud" : "text-cream-dim"}>
+                  {contactValid ? "VERIFIED" : "REQUIRED"}
+                </span>
+              </div>
+              <div className="grid grid-cols-1 gap-3">
+                <ContactField
+                  label="Név · CALLSIGN"
+                  placeholder="Kovács János"
+                  value={name}
+                  onChange={setName}
+                  valid={nameValid}
+                  touched={name.length > 0}
+                  maxLength={80}
+                />
+                <ContactField
+                  label="E-mail · COMMS"
+                  placeholder="operator@example.com"
+                  value={email}
+                  onChange={setEmail}
+                  valid={emailValid}
+                  touched={email.length > 0}
+                  type="email"
+                  maxLength={120}
+                />
+                <ContactField
+                  label="Telefon · SECURE LINE"
+                  placeholder="+36 30 123 4567"
+                  value={phone}
+                  onChange={setPhone}
+                  valid={phoneValid}
+                  touched={phone.length > 0}
+                  type="tel"
+                  maxLength={30}
+                />
+              </div>
+              <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.25em] text-cream-dim">
+                Az adatokat kizárólag a foglalás egyeztetésére használjuk.
+              </p>
+            </div>
+
             {/* deploy */}
             <button
-              disabled={!selected || !slot}
-              data-hover={selected && slot ? true : undefined}
-              className="btn-deploy mt-8 w-full justify-center disabled:opacity-40"
+              disabled={!canDeploy}
+              data-hover={canDeploy ? true : undefined}
+              className="btn-deploy mt-6 w-full justify-center disabled:opacity-40"
             >
               <span className="font-mono text-[10px] opacity-70">›››</span>
-              {selected && slot ? "Bevetés foglalása" : "Válassz dátumot + időt"}
+              {!selected || !slot
+                ? "Válassz dátumot + időt"
+                : !contactValid
+                  ? "Add meg az elérhetőséged"
+                  : "Bevetés foglalása"}
             </button>
             <div className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.3em] text-cream-dim">
               Visszaigazolás · 24 órán belül
@@ -355,5 +412,49 @@ export function BookingCalendar() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ContactField({
+  label, placeholder, value, onChange, valid, touched, type = "text", maxLength,
+}: {
+  label: string;
+  placeholder: string;
+  value: string;
+  onChange: (v: string) => void;
+  valid: boolean;
+  touched: boolean;
+  type?: string;
+  maxLength?: number;
+}) {
+  const showError = touched && !valid;
+  const showOk = touched && valid;
+  return (
+    <label className="block">
+      <div className="mb-1 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.3em]">
+        <span className="text-cream-dim">{label}</span>
+        <span className={showError ? "text-destructive" : showOk ? "text-hud" : "text-cream-dim/50"}>
+          {showError ? "✕ ERR" : showOk ? "✓ OK" : "··"}
+        </span>
+      </div>
+      <div
+        className={[
+          "relative border bg-background/40 transition",
+          showError ? "border-destructive/70" : showOk ? "border-hud/70" : "border-hud/25 focus-within:border-hud/60",
+        ].join(" ")}
+      >
+        <span className="absolute left-0 top-0 h-1.5 w-1.5 border-l border-t border-hud/60" />
+        <span className="absolute bottom-0 right-0 h-1.5 w-1.5 border-b border-r border-hud/60" />
+        <input
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          maxLength={maxLength}
+          data-hover
+          className="w-full bg-transparent px-3 py-2.5 font-mono text-sm text-cream outline-none placeholder:text-cream-dim/40"
+        />
+      </div>
+    </label>
   );
 }
