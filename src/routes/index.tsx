@@ -614,7 +614,7 @@ function TopGunPage() {
       <main>
         <Hero />
         <Briefing />
-        <Stats />
+        
         <Packages />
         <Gallery />
         <Kids />
