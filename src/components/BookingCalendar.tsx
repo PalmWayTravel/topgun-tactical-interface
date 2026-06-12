@@ -46,6 +46,15 @@ export function BookingCalendar() {
   const [slot, setSlot] = useState<string | null>(null);
   const [pkg, setPkg] = useState<string>("PKG-02");
   const [squad, setSquad] = useState(8);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const phoneValid = phone.trim().replace(/[^\d]/g, "").length >= 7;
+  const nameValid = name.trim().length >= 2;
+  const contactValid = nameValid && emailValid && phoneValid;
+  const canDeploy = !!selected && !!slot && contactValid;
 
   const cells = useMemo(
     () => monthGrid(cursor.getFullYear(), cursor.getMonth()),
