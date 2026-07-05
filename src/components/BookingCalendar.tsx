@@ -439,15 +439,29 @@ export function BookingCalendar() {
             <button
               disabled={!canDeploy}
               data-hover={canDeploy ? true : undefined}
+              onClick={handleSubmit}
               className="btn-deploy mt-6 w-full justify-center disabled:opacity-40"
             >
               <span className="font-mono text-[10px] opacity-70">›››</span>
-              {!selected || !slot
-                ? "Válassz dátumot + időt"
-                : !contactValid
-                  ? "Add meg az elérhetőséged"
-                  : "Bevetés foglalása"}
+              {submitting
+                ? "Küldés..."
+                : !selected || !slot
+                  ? "Válassz dátumot + időt"
+                  : !contactValid
+                    ? "Add meg az elérhetőséged"
+                    : "Bevetés foglalása"}
             </button>
+            {submitState.status === "success" && (
+              <div className="mt-4 border border-hud/60 bg-hud/10 p-3 font-mono text-[11px] uppercase tracking-[0.2em] text-hud">
+                ✓ Foglalás rögzítve · hamarosan felvesszük veled a kapcsolatot.
+                <div className="mt-1 text-[9px] text-cream-dim">REF · {submitState.id.slice(0, 8).toUpperCase()}</div>
+              </div>
+            )}
+            {submitState.status === "error" && (
+              <div className="mt-4 border border-destructive/60 bg-destructive/10 p-3 font-mono text-[11px] uppercase tracking-[0.2em] text-destructive">
+                ✕ {submitState.message}
+              </div>
+            )}
             <div className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.3em] text-cream-dim">
               Visszaigazolás · 24 órán belül
             </div>
