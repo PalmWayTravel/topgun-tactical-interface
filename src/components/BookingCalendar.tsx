@@ -51,12 +51,53 @@ export function BookingCalendar() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitState, setSubmitState] = useState<
+    { status: "idle" } | { status: "success"; id: string } | { status: "error"; message: string }
+  >({ status: "idle" });
+
+  const submitBooking = useServerFn(createBooking);
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const phoneValid = phone.trim().replace(/[^\d]/g, "").length >= 7;
   const nameValid = name.trim().length >= 2;
   const contactValid = nameValid && emailValid && phoneValid;
-  const canDeploy = !!selected && !!slot && contactValid;
+  const canDeploy = !!selected && !!slot && contactValid && !submitting;
+
+  const handleSubmit = async () => {
+    if (!selected || !slot || !contactValid) return;
+    setSubmitting(true);
+    setSubmitState({ status: "idle" });
+    try {
+      const y = selected.getFullYear();
+      const m = String(selected.getMonth() + 1).padStart(2, "0");
+      const d = String(selected.getDate()).padStart(2, "0");
+      const res = await submitBooking({
+        data: {
+          booking_date: `${y}-${m}-${d}`,
+          time_slot: slot,
+          package_code: pkg,
+          squad_size: squad,
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+        },
+      });
+      setSubmitState({ status: "success", id: res.id });
+      setSelected(null);
+      setSlot(null);
+      setName("");
+      setEmail("");
+      setPhone("");
+    } catch (err) {
+      setSubmitState({
+        status: "error",
+        message: err instanceof Error ? err.message : "Ismeretlen hiba.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const cells = useMemo(
     () => monthGrid(cursor.getFullYear(), cursor.getMonth()),
