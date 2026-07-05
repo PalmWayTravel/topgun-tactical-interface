@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { HudCorners } from "@/components/HudCorners";
+import { createBooking } from "@/lib/bookings.functions";
 
 const HU_MONTHS = [
   "Január", "Február", "Március", "Április", "Május", "Június",
@@ -49,12 +51,53 @@ export function BookingCalendar() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitState, setSubmitState] = useState<
+    { status: "idle" } | { status: "success"; id: string } | { status: "error"; message: string }
+  >({ status: "idle" });
+
+  const submitBooking = useServerFn(createBooking);
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const phoneValid = phone.trim().replace(/[^\d]/g, "").length >= 7;
   const nameValid = name.trim().length >= 2;
   const contactValid = nameValid && emailValid && phoneValid;
-  const canDeploy = !!selected && !!slot && contactValid;
+  const canDeploy = !!selected && !!slot && contactValid && !submitting;
+
+  const handleSubmit = async () => {
+    if (!selected || !slot || !contactValid) return;
+    setSubmitting(true);
+    setSubmitState({ status: "idle" });
+    try {
+      const y = selected.getFullYear();
+      const m = String(selected.getMonth() + 1).padStart(2, "0");
+      const d = String(selected.getDate()).padStart(2, "0");
+      const res = await submitBooking({
+        data: {
+          booking_date: `${y}-${m}-${d}`,
+          time_slot: slot,
+          package_code: pkg,
+          squad_size: squad,
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+        },
+      });
+      setSubmitState({ status: "success", id: res.id });
+      setSelected(null);
+      setSlot(null);
+      setName("");
+      setEmail("");
+      setPhone("");
+    } catch (err) {
+      setSubmitState({
+        status: "error",
+        message: err instanceof Error ? err.message : "Ismeretlen hiba.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const cells = useMemo(
     () => monthGrid(cursor.getFullYear(), cursor.getMonth()),
@@ -396,15 +439,29 @@ export function BookingCalendar() {
             <button
               disabled={!canDeploy}
               data-hover={canDeploy ? true : undefined}
+              onClick={handleSubmit}
               className="btn-deploy mt-6 w-full justify-center disabled:opacity-40"
             >
               <span className="font-mono text-[10px] opacity-70">›››</span>
-              {!selected || !slot
-                ? "Válassz dátumot + időt"
-                : !contactValid
-                  ? "Add meg az elérhetőséged"
-                  : "Bevetés foglalása"}
+              {submitting
+                ? "Küldés..."
+                : !selected || !slot
+                  ? "Válassz dátumot + időt"
+                  : !contactValid
+                    ? "Add meg az elérhetőséged"
+                    : "Bevetés foglalása"}
             </button>
+            {submitState.status === "success" && (
+              <div className="mt-4 border border-hud/60 bg-hud/10 p-3 font-mono text-[11px] uppercase tracking-[0.2em] text-hud">
+                ✓ Foglalás rögzítve · hamarosan felvesszük veled a kapcsolatot.
+                <div className="mt-1 text-[9px] text-cream-dim">REF · {submitState.id.slice(0, 8).toUpperCase()}</div>
+              </div>
+            )}
+            {submitState.status === "error" && (
+              <div className="mt-4 border border-destructive/60 bg-destructive/10 p-3 font-mono text-[11px] uppercase tracking-[0.2em] text-destructive">
+                ✕ {submitState.message}
+              </div>
+            )}
             <div className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.3em] text-cream-dim">
               Visszaigazolás · 24 órán belül
             </div>
