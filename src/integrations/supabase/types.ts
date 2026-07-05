@@ -14,7 +14,83 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          booking_date: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          package_code: string
+          phone: string
+          review_requested_at: string | null
+          squad_size: number
+          status: string
+          time_slot: string
+        }
+        Insert: {
+          booking_date: string
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          package_code: string
+          phone: string
+          review_requested_at?: string | null
+          squad_size: number
+          status?: string
+          time_slot: string
+        }
+        Update: {
+          booking_date?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          package_code?: string
+          phone?: string
+          review_requested_at?: string | null
+          squad_size?: number
+          status?: string
+          time_slot?: string
+        }
+        Relationships: []
+      }
+      feedback: {
+        Row: {
+          booking_id: string | null
+          comment: string | null
+          created_at: string
+          id: string
+          rating: number
+          redirected_to_google: boolean
+        }
+        Insert: {
+          booking_id?: string | null
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating: number
+          redirected_to_google?: boolean
+        }
+        Update: {
+          booking_id?: string | null
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating?: number
+          redirected_to_google?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feedback_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
