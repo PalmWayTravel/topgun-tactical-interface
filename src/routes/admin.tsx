@@ -221,7 +221,13 @@ function AdminConsole({ onLogout }: { onLogout: () => void }) {
   );
 }
 
-function BookingsTable({ rows }: { rows: Booking[] }) {
+function BookingsTable({
+  rows,
+  onStatusChange,
+}: {
+  rows: Booking[];
+  onStatusChange: (id: string, status: BookingStatus) => void;
+}) {
   if (rows.length === 0) {
     return (
       <div className="border border-hud/20 p-8 text-center font-mono text-xs uppercase tracking-[0.3em] text-cream-dim">
@@ -265,9 +271,11 @@ function BookingsTable({ rows }: { rows: Booking[] }) {
                 </a>
               </Td>
               <Td>
-                <span className="border border-hud/40 px-2 py-0.5 text-[10px] uppercase">
-                  {r.status}
-                </span>
+                <StatusSelect
+                  id={r.id}
+                  value={(r.status as BookingStatus) ?? "pending"}
+                  onChange={(s) => onStatusChange(r.id, s)}
+                />
               </Td>
             </tr>
           ))}
@@ -276,6 +284,62 @@ function BookingsTable({ rows }: { rows: Booking[] }) {
     </div>
   );
 }
+
+function StatusSelect({
+  id,
+  value,
+  onChange,
+}: {
+  id: string;
+  value: BookingStatus;
+  onChange: (s: BookingStatus) => void;
+}) {
+  const update = useServerFn(updateBookingStatus);
+  const [saving, setSaving] = useState(false);
+  const [savedAt, setSavedAt] = useState(0);
+  const [err, setErr] = useState<string | null>(null);
+
+  const handle = async (next: BookingStatus) => {
+    const prev = value;
+    onChange(next);
+    setSaving(true);
+    setErr(null);
+    try {
+      await update({ data: { id, status: next } });
+      setSavedAt(Date.now());
+    } catch {
+      setErr("Hiba");
+      onChange(prev);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const justSaved = savedAt && Date.now() - savedAt < 1500;
+
+  return (
+    <div className="flex items-center gap-2">
+      <select
+        value={value}
+        disabled={saving}
+        onChange={(e) => handle(e.target.value as BookingStatus)}
+        className="border border-hud/40 bg-background/60 px-2 py-1 text-[10px] uppercase tracking-[0.15em] text-cream outline-none focus:border-hud disabled:opacity-50"
+      >
+        {STATUS_OPTIONS.map((o) => (
+          <option key={o.value} value={o.value} className="bg-background text-cream">
+            {o.label}
+          </option>
+        ))}
+      </select>
+      {saving && <span className="text-[10px] text-cream-dim">…</span>}
+      {!saving && justSaved && (
+        <span key={savedAt} className="text-[12px] text-hud animate-flicker">✓</span>
+      )}
+      {err && <span className="text-[10px] text-destructive">{err}</span>}
+    </div>
+  );
+}
+
 
 function FeedbackTable({ rows }: { rows: Feedback[] }) {
   if (rows.length === 0) {
