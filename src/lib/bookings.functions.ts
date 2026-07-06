@@ -124,3 +124,21 @@ export const listFeedback = createServerFn({ method: "GET" }).handler(async () =
   if (error) throw new Error(error.message);
   return data ?? [];
 });
+
+const statusSchema = z.object({
+  id: z.string().uuid(),
+  status: z.enum(["pending", "confirmed", "completed", "cancelled"]),
+});
+
+export const updateBookingStatus = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => statusSchema.parse(data))
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin
+      .from("bookings")
+      .update({ status: data.status })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });
