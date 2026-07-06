@@ -608,7 +608,7 @@ function Footer() {
 /* ---------------- PAGE ---------------- */
 function TopGunPage() {
   return (
-    <div className="relative min-h-screen bg-background text-foreground">
+    <div className="tactical-cursor-zone relative min-h-screen bg-background text-foreground">
       <Crosshair />
       <Header />
       <main>
