@@ -8,7 +8,16 @@ import {
   adminStatus,
   listBookings,
   listFeedback,
+  updateBookingStatus,
 } from "@/lib/bookings.functions";
+
+const STATUS_OPTIONS = [
+  { value: "pending", label: "Függőben" },
+  { value: "confirmed", label: "Visszaigazolva" },
+  { value: "completed", label: "Teljesítve" },
+  { value: "cancelled", label: "Lemondva" },
+] as const;
+type BookingStatus = (typeof STATUS_OPTIONS)[number]["value"];
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
