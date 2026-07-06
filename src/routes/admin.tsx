@@ -207,7 +207,12 @@ function AdminConsole({ onLogout }: { onLogout: () => void }) {
             // BETÖLTÉS...
           </div>
         ) : tab === "bookings" ? (
-          <BookingsTable rows={bookings} />
+          <BookingsTable
+            rows={bookings}
+            onStatusChange={(id, status) =>
+              setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)))
+            }
+          />
         ) : (
           <FeedbackTable rows={feedback} />
         )}
