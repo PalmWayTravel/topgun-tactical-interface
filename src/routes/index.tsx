@@ -220,24 +220,25 @@ function Briefing() {
   );
 }
 
-/* ---------------- STATS ---------------- */
-function Stats() {
+/* ---------------- HIGHLIGHTS ---------------- */
+function Highlights() {
   const items = [
-    { n: 18420, l: "Lejátszott csaták", s: "+" },
-    { n: 1240, l: "Csapatok bevetve", s: "+" },
-    { n: 12, l: "Év a pályán", s: "" },
-    { n: 4, l: "Pálya szektor", s: "" },
+    "1 pálya / szektor",
+    "Városi rendezvények állandó résztvevője",
   ];
   return (
-    <section className="relative border-t border-hud/15 py-20">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="grid grid-cols-2 gap-px overflow-hidden border border-hud/20 bg-hud/20 sm:grid-cols-4">
-          {items.map((it) => (
-            <div key={it.l} className="hud-corners-4 relative bg-background p-8 text-center">
+    <section className="relative border-t border-hud/15 py-16">
+      <div className="mx-auto max-w-5xl px-6">
+        <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:gap-6">
+          {items.map((label) => (
+            <div
+              key={label}
+              className="hud-corners-4 relative flex-1 border border-hud/30 bg-surface/60 px-6 py-5 text-center"
+            >
               <HudCorners />
-              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream-dim">{it.l}</div>
-              <div className="mt-3 font-mono text-4xl font-bold text-hud text-hud-glow md:text-5xl">
-                <CountUp to={it.n} suffix={it.s} />
+              <div className="flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-cream sm:text-sm">
+                <span className="h-1.5 w-1.5 shrink-0 bg-hud animate-hud-pulse" />
+                <span>{label}</span>
               </div>
             </div>
           ))}
