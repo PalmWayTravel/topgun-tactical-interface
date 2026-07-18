@@ -618,7 +618,7 @@ function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
         <Logo />
         <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream-dim">
-          © {new Date().getFullYear()} TopGun Paintball · All Sectors Reserved
+          © {new Date().getFullYear()} Top Gun Paintball · Nyírbátor · All Sectors Reserved
         </div>
       </div>
     </footer>
