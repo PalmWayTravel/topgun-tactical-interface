@@ -499,17 +499,17 @@ function Location() {
                 </circle>
                 <circle cx="420" cy="230" r="6" fill="#F4A11D" />
                 <line x1="420" y1="100" x2="420" y2="200" stroke="#F4A11D" strokeWidth="0.5" />
-                <text x="420" y="92" fill="#F4A11D" fontFamily="JetBrains Mono" fontSize="10" textAnchor="middle" letterSpacing="2">TOPGUN · TG-01</text>
-                <text x="420" y="260" fill="#F5E7C8" fontFamily="JetBrains Mono" fontSize="9" textAnchor="middle" letterSpacing="2">47.4979° N · 19.0402° E</text>
+                <text x="420" y="92" fill="#F4A11D" fontFamily="JetBrains Mono" fontSize="10" textAnchor="middle" letterSpacing="2">TOPGUN · NYÍRBÁTOR</text>
+                <text x="420" y="260" fill="#F5E7C8" fontFamily="JetBrains Mono" fontSize="9" textAnchor="middle" letterSpacing="2">BAKONYIKERT · SZABOLCS-SZATMÁR-BEREG</text>
               </svg>
               <div className="absolute inset-x-4 top-4 flex justify-between font-mono text-[10px] uppercase tracking-[0.3em] text-hud">
-                <span>● LIVE FEED</span>
-                <span>ZOOM ·12·</span>
+                <span>● LOCATION LOCK</span>
+                <span>SECTOR · TG-01</span>
               </div>
-              <div className="absolute inset-x-4 bottom-4 grid grid-cols-3 gap-4 font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim">
-                <div><div className="text-hud">Cím</div>Budapest, Pálya út 12.</div>
-                <div><div className="text-hud">Megközelítés</div>15 perc M0</div>
-                <div><div className="text-hud">Parkoló</div>40 férőhely</div>
+              <div className="absolute inset-x-4 bottom-4 grid grid-cols-1 gap-4 font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim sm:grid-cols-3">
+                <div><div className="text-hud">Helyszín</div>Nyírbátor, Bakonyikert</div>
+                <div><div className="text-hud">Egyeztetés</div>Előzetes bejelentkezés</div>
+                <div><div className="text-hud">Telefon</div>70-603-3929 / 70-603-4088</div>
               </div>
             </div>
           </div>
