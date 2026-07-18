@@ -436,20 +436,28 @@ function Kids() {
         </Reveal>
         <Reveal delay={150}>
           <div>
-            <div className="label-mono mb-4">// JUNIOR · 8–14 ÉV</div>
+            <div className="label-mono mb-4">// JUNIOR · 9+ ÉV</div>
             <h2 className="font-display text-4xl font-bold uppercase leading-tight text-cream sm:text-5xl">
               Gyerek bevetés. <span className="text-hud">Felnőtt élmény, biztonsággal.</span>
             </h2>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-cream-dim">
-              Könnyített markerek, lágyabb lövedék, gyerekméretű felszerelés és külön junior pálya.
-              Folyamatos felügyelet, bemelegítés és vidám játékmódok — szülinapokra, osztályoknak,
+              9 éves kortól ajánlott. Speciális, gyerekekre méretezett paintball markereket
+              használunk, hogy a felszerelés kényelmes és biztonságos legyen. Folyamatos
+              felügyelet, bemelegítés és vidám játékmódok — szülinapokra, osztályoknak,
               hétvégi programra.
             </p>
             <ul className="mt-6 grid grid-cols-2 gap-3 font-mono text-xs uppercase tracking-[0.2em] text-cream">
-              {["Junior marker", "Külön pálya", "Animátor", "Torta opció"].map((x) => (
+              {["Gyerek marker", "9+ év", "Felügyelet", "Diák kedvezmény"].map((x) => (
                 <li key={x} className="flex items-center gap-2"><span className="h-1.5 w-1.5 bg-hud" />{x}</li>
               ))}
             </ul>
+            <div className="mt-6 hud-corners-4 relative border border-hud/30 bg-surface/40 px-4 py-3">
+              <HudCorners />
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream-dim">
+                <span className="text-hud">// BONUS:</span> Érvényes diákigazolvánnyal
+                <span className="text-hud"> +100 golyó ajándék</span> minden csomaghoz.
+              </p>
+            </div>
             <a href="#booking" className="btn-deploy mt-10">Gyerekprogram foglalás ›</a>
           </div>
         </Reveal>
