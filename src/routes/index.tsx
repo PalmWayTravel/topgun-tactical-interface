@@ -587,16 +587,17 @@ function Contact() {
         </Reveal>
         <Reveal delay={460}>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href="tel:+36000000000" className="btn-deploy">● Hívás · +36 00 000 0000</a>
-            <a href="mailto:hello@topgun.hu" className="btn-ghost-hud">hello@topgun.hu</a>
+            <a href="tel:+36706033929" className="btn-deploy">● Hívás · 70-603-3929</a>
+            <a href="tel:+36706034088" className="btn-ghost-hud">70-603-4088</a>
+            <a href="mailto:paintballtopgun@gmail.com" className="btn-ghost-hud">paintballtopgun@gmail.com</a>
           </div>
         </Reveal>
         <Reveal delay={620}>
-          <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-px border border-hud/20 bg-hud/20 sm:grid-cols-3">
+          <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-px border border-hud/20 bg-hud/20 sm:grid-cols-3">
             {[
-              ["Cím", "Budapest, Pálya út 12."],
-              ["Nyitva", "Sze–Vas · 09–20"],
-              ["Email", "hello@topgun.hu"],
+              ["Helyszín", "Nyírbátor, Bakonyikert"],
+              ["Nyitva", "Előzetes egyeztetés alapján"],
+              ["Email", "paintballtopgun@gmail.com"],
             ].map(([k, v]) => (
               <div key={k} className="bg-background p-5 text-left">
                 <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-hud">{k}</div>
