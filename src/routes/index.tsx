@@ -339,6 +339,16 @@ function Packages() {
             </Reveal>
           ))}
         </div>
+        <Reveal delay={200}>
+          <div className="hud-corners-4 relative mt-8 border border-hud/30 bg-surface/40 px-6 py-4">
+            <HudCorners />
+            <p className="text-center font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-cream-dim sm:text-xs">
+              <span className="text-hud">// INTEL:</span> További lőszer <span className="text-cream">1.500 Ft / 100 golyó</span>
+              <span className="mx-3 text-hud">·</span>
+              Érvényes diákigazolvánnyal <span className="text-hud">+100 golyó ajándék!</span>
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
