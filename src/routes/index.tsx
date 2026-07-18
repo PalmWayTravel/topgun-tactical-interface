@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { HudCorners } from "@/components/HudCorners";
 import { Crosshair } from "@/components/Crosshair";
 import { Reveal } from "@/components/Reveal";
-import { CountUp } from "@/components/CountUp";
+
 import heroFallback from "@/assets/hero-fallback.jpg";
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
