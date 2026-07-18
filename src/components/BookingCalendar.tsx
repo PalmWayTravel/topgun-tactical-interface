@@ -19,9 +19,9 @@ const TIME_SLOTS = [
 ];
 
 const PACKAGES = [
-  { code: "PKG-01", name: "Squad Drop" },
-  { code: "PKG-02", name: "Stag Mission" },
-  { code: "PKG-03", name: "Corp Recon" },
+  { code: "PKG-01", name: "Gyerek" },
+  { code: "PKG-02", name: "Pro" },
+  { code: "PKG-03", name: "Master" },
 ];
 
 function monthGrid(year: number, month: number) {

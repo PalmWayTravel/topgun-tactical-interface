@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { HudCorners } from "@/components/HudCorners";
 import { Crosshair } from "@/components/Crosshair";
 import { Reveal } from "@/components/Reveal";
-import { CountUp } from "@/components/CountUp";
+
 import heroFallback from "@/assets/hero-fallback.jpg";
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
@@ -220,24 +220,25 @@ function Briefing() {
   );
 }
 
-/* ---------------- STATS ---------------- */
-function Stats() {
+/* ---------------- HIGHLIGHTS ---------------- */
+function Highlights() {
   const items = [
-    { n: 18420, l: "Lejátszott csaták", s: "+" },
-    { n: 1240, l: "Csapatok bevetve", s: "+" },
-    { n: 12, l: "Év a pályán", s: "" },
-    { n: 4, l: "Pálya szektor", s: "" },
+    "1 pálya / szektor",
+    "Városi rendezvények állandó résztvevője",
   ];
   return (
-    <section className="relative border-t border-hud/15 py-20">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="grid grid-cols-2 gap-px overflow-hidden border border-hud/20 bg-hud/20 sm:grid-cols-4">
-          {items.map((it) => (
-            <div key={it.l} className="hud-corners-4 relative bg-background p-8 text-center">
+    <section className="relative border-t border-hud/15 py-16">
+      <div className="mx-auto max-w-5xl px-6">
+        <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:gap-6">
+          {items.map((label) => (
+            <div
+              key={label}
+              className="hud-corners-4 relative flex-1 border border-hud/30 bg-surface/60 px-6 py-5 text-center"
+            >
               <HudCorners />
-              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream-dim">{it.l}</div>
-              <div className="mt-3 font-mono text-4xl font-bold text-hud text-hud-glow md:text-5xl">
-                <CountUp to={it.n} suffix={it.s} />
+              <div className="flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-cream sm:text-sm">
+                <span className="h-1.5 w-1.5 shrink-0 bg-hud animate-hud-pulse" />
+                <span>{label}</span>
               </div>
             </div>
           ))}
@@ -252,29 +253,29 @@ function Packages() {
   const items = [
     {
       code: "PKG-01",
-      title: "Squad Drop",
-      tag: "Alap bevetés",
-      price: "8 900",
+      title: "Gyerek",
+      tag: "Junior bevetés",
+      price: "5 000",
       unit: "Ft / fő",
-      perks: ["2 óra játék", "300 lövedék", "Teljes felszerelés", "Bíró + brief"],
+      perks: ["100 golyó", "Gyerek marker", "Teljes felszerelés", "Bíró + brief"],
       featured: false,
     },
     {
       code: "PKG-02",
-      title: "Stag Mission",
-      tag: "Legénybúcsú",
-      price: "14 900",
+      title: "Pro",
+      tag: "Klasszikus",
+      price: "7 000",
       unit: "Ft / fő",
-      perks: ["3 óra játék", "600 lövedék", "Külön VIP zóna", "Trófea + fotók", "Vőlegény célpont mód"],
+      perks: ["200 golyó", "Teljes felszerelés", "Bíró + brief", "Több játékmód"],
       featured: true,
     },
     {
       code: "PKG-03",
-      title: "Corp Recon",
-      tag: "Cégeknek",
-      price: "Egyedi",
-      unit: "ajánlat",
-      perks: ["Csapatépítő modulok", "Catering opció", "Brand HUD overlay", "Akár 60 fő"],
+      title: "Master",
+      tag: "Hosszú bevetés",
+      price: "9 000",
+      unit: "Ft / fő",
+      perks: ["500 golyó", "Teljes felszerelés", "Bíró + brief", "Hosszabb játékidő"],
       featured: false,
     },
   ];
@@ -338,6 +339,16 @@ function Packages() {
             </Reveal>
           ))}
         </div>
+        <Reveal delay={200}>
+          <div className="hud-corners-4 relative mt-8 border border-hud/30 bg-surface/40 px-6 py-4">
+            <HudCorners />
+            <p className="text-center font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-cream-dim sm:text-xs">
+              <span className="text-hud">// INTEL:</span> További lőszer <span className="text-cream">1.500 Ft / 100 golyó</span>
+              <span className="mx-3 text-hud">·</span>
+              Érvényes diákigazolvánnyal <span className="text-hud">+100 golyó ajándék!</span>
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -425,20 +436,28 @@ function Kids() {
         </Reveal>
         <Reveal delay={150}>
           <div>
-            <div className="label-mono mb-4">// JUNIOR · 8–14 ÉV</div>
+            <div className="label-mono mb-4">// JUNIOR · 9+ ÉV</div>
             <h2 className="font-display text-4xl font-bold uppercase leading-tight text-cream sm:text-5xl">
               Gyerek bevetés. <span className="text-hud">Felnőtt élmény, biztonsággal.</span>
             </h2>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-cream-dim">
-              Könnyített markerek, lágyabb lövedék, gyerekméretű felszerelés és külön junior pálya.
-              Folyamatos felügyelet, bemelegítés és vidám játékmódok — szülinapokra, osztályoknak,
+              9 éves kortól ajánlott. Speciális, gyerekekre méretezett paintball markereket
+              használunk, hogy a felszerelés kényelmes és biztonságos legyen. Folyamatos
+              felügyelet, bemelegítés és vidám játékmódok — szülinapokra, osztályoknak,
               hétvégi programra.
             </p>
             <ul className="mt-6 grid grid-cols-2 gap-3 font-mono text-xs uppercase tracking-[0.2em] text-cream">
-              {["Junior marker", "Külön pálya", "Animátor", "Torta opció"].map((x) => (
+              {["Gyerek marker", "9+ év", "Felügyelet", "Diák kedvezmény"].map((x) => (
                 <li key={x} className="flex items-center gap-2"><span className="h-1.5 w-1.5 bg-hud" />{x}</li>
               ))}
             </ul>
+            <div className="mt-6 hud-corners-4 relative border border-hud/30 bg-surface/40 px-4 py-3">
+              <HudCorners />
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream-dim">
+                <span className="text-hud">// BONUS:</span> Érvényes diákigazolvánnyal
+                <span className="text-hud"> +100 golyó ajándék</span> minden csomaghoz.
+              </p>
+            </div>
             <a href="#booking" className="btn-deploy mt-10">Gyerekprogram foglalás ›</a>
           </div>
         </Reveal>
@@ -480,17 +499,17 @@ function Location() {
                 </circle>
                 <circle cx="420" cy="230" r="6" fill="#F4A11D" />
                 <line x1="420" y1="100" x2="420" y2="200" stroke="#F4A11D" strokeWidth="0.5" />
-                <text x="420" y="92" fill="#F4A11D" fontFamily="JetBrains Mono" fontSize="10" textAnchor="middle" letterSpacing="2">TOPGUN · TG-01</text>
-                <text x="420" y="260" fill="#F5E7C8" fontFamily="JetBrains Mono" fontSize="9" textAnchor="middle" letterSpacing="2">47.4979° N · 19.0402° E</text>
+                <text x="420" y="92" fill="#F4A11D" fontFamily="JetBrains Mono" fontSize="10" textAnchor="middle" letterSpacing="2">TOPGUN · NYÍRBÁTOR</text>
+                <text x="420" y="260" fill="#F5E7C8" fontFamily="JetBrains Mono" fontSize="9" textAnchor="middle" letterSpacing="2">BAKONYIKERT · SZABOLCS-SZATMÁR-BEREG</text>
               </svg>
               <div className="absolute inset-x-4 top-4 flex justify-between font-mono text-[10px] uppercase tracking-[0.3em] text-hud">
-                <span>● LIVE FEED</span>
-                <span>ZOOM ·12·</span>
+                <span>● LOCATION LOCK</span>
+                <span>SECTOR · TG-01</span>
               </div>
-              <div className="absolute inset-x-4 bottom-4 grid grid-cols-3 gap-4 font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim">
-                <div><div className="text-hud">Cím</div>Budapest, Pálya út 12.</div>
-                <div><div className="text-hud">Megközelítés</div>15 perc M0</div>
-                <div><div className="text-hud">Parkoló</div>40 férőhely</div>
+              <div className="absolute inset-x-4 bottom-4 grid grid-cols-1 gap-4 font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim sm:grid-cols-3">
+                <div><div className="text-hud">Helyszín</div>Nyírbátor, Bakonyikert</div>
+                <div><div className="text-hud">Egyeztetés</div>Előzetes bejelentkezés</div>
+                <div><div className="text-hud">Telefon</div>70-603-3929 / 70-603-4088</div>
               </div>
             </div>
           </div>
@@ -568,16 +587,17 @@ function Contact() {
         </Reveal>
         <Reveal delay={460}>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href="tel:+36000000000" className="btn-deploy">● Hívás · +36 00 000 0000</a>
-            <a href="mailto:hello@topgun.hu" className="btn-ghost-hud">hello@topgun.hu</a>
+            <a href="tel:+36706033929" className="btn-deploy">● Hívás · 70-603-3929</a>
+            <a href="tel:+36706034088" className="btn-ghost-hud">70-603-4088</a>
+            <a href="mailto:paintballtopgun@gmail.com" className="btn-ghost-hud">paintballtopgun@gmail.com</a>
           </div>
         </Reveal>
         <Reveal delay={620}>
-          <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-px border border-hud/20 bg-hud/20 sm:grid-cols-3">
+          <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-px border border-hud/20 bg-hud/20 sm:grid-cols-3">
             {[
-              ["Cím", "Budapest, Pálya út 12."],
-              ["Nyitva", "Sze–Vas · 09–20"],
-              ["Email", "hello@topgun.hu"],
+              ["Helyszín", "Nyírbátor, Bakonyikert"],
+              ["Nyitva", "Előzetes egyeztetés alapján"],
+              ["Email", "paintballtopgun@gmail.com"],
             ].map(([k, v]) => (
               <div key={k} className="bg-background p-5 text-left">
                 <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-hud">{k}</div>
@@ -598,7 +618,7 @@ function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
         <Logo />
         <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream-dim">
-          © {new Date().getFullYear()} TopGun Paintball · All Sectors Reserved
+          © {new Date().getFullYear()} Top Gun Paintball · Nyírbátor · All Sectors Reserved
         </div>
       </div>
     </footer>
@@ -614,7 +634,7 @@ function TopGunPage() {
       <main>
         <Hero />
         <Briefing />
-        
+        <Highlights />
         <Packages />
         <Gallery />
         <Kids />
