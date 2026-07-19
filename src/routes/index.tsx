@@ -421,8 +421,9 @@ function Gallery() {
 /* ---------------- KIDS ---------------- */
 function Kids() {
   return (
-    <section id="kids" className="relative border-t border-hud/15 py-28">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2">
+    <section id="kids" className="relative overflow-hidden border-t border-hud/15 py-28">
+      <Splatter seed={66} count={2} />
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2">
         <Reveal>
           <figure className="hud-corners-4 relative overflow-hidden border border-hud/25">
             <HudCorners />
