@@ -455,6 +455,15 @@ export function BookingCalendar() {
               <div className="mt-4 border border-hud/60 bg-hud/10 p-3 font-mono text-[11px] uppercase tracking-[0.2em] text-hud">
                 ✓ Foglalás rögzítve · hamarosan felvesszük veled a kapcsolatot.
                 <div className="mt-1 text-[9px] text-cream-dim">REF · {submitState.id.slice(0, 8).toUpperCase()}</div>
+                <div className="mt-2 border-t border-hud/25 pt-2 text-[10px] normal-case tracking-normal text-cream-dim">
+                  Lemondanád?{" "}
+                  <a
+                    href={`/lemondas?booking_id=${submitState.id}`}
+                    className="text-hud underline underline-offset-2 hover:opacity-80"
+                  >
+                    Kattints ide
+                  </a>
+                </div>
               </div>
             )}
             {submitState.status === "error" && (
