@@ -535,8 +535,9 @@ function Reviews() {
     { n: "Márk P.", r: 5, t: "A gyerek szülinapra is királyság, külön junior pálya, animátor." },
   ];
   return (
-    <section id="reviews" className="relative border-t border-hud/15 py-28">
-      <div className="mx-auto max-w-7xl px-6">
+    <section id="reviews" className="relative overflow-hidden border-t border-hud/15 py-28">
+      <Splatter seed={88} count={2} />
+      <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// FEEDBACK · VERIFIED · GOOGLE</div>
         </Reveal>
