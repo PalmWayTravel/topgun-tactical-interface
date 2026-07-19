@@ -284,8 +284,9 @@ function Packages() {
     },
   ];
   return (
-    <section id="packages" className="relative border-t border-hud/15 py-28">
+    <section id="packages" className="relative overflow-hidden border-t border-hud/15 py-28">
       <div className="pointer-events-none absolute inset-0 hud-grid opacity-25" aria-hidden />
+      <Splatter seed={44} count={2} />
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// PKG · BEVETÉSI OPCIÓK</div>
