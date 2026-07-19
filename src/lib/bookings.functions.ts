@@ -142,3 +142,43 @@ export const updateBookingStatus = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true as const };
   });
+
+export const getBookingForCancel = createServerFn({ method: "GET" })
+  .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await supabaseAdmin
+      .from("bookings")
+      .select("id, booking_date, time_slot, package_code, squad_size, name, status")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (error) {
+      console.error("getBookingForCancel error", error);
+      throw new Error("Nem sikerült betölteni a foglalást.");
+    }
+    if (!row) return { found: false as const };
+    return { found: true as const, booking: row };
+  });
+
+export const cancelBooking = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: existing, error: readErr } = await supabaseAdmin
+      .from("bookings")
+      .select("id, status")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (readErr) throw new Error("Nem sikerült betölteni a foglalást.");
+    if (!existing) return { ok: false as const, reason: "not_found" as const };
+    if (existing.status === "cancelled") return { ok: false as const, reason: "already_cancelled" as const };
+    const { error } = await supabaseAdmin
+      .from("bookings")
+      .update({ status: "cancelled" })
+      .eq("id", data.id);
+    if (error) {
+      console.error("cancelBooking error", error);
+      throw new Error("Nem sikerült lemondani a foglalást.");
+    }
+    return { ok: true as const };
+  });

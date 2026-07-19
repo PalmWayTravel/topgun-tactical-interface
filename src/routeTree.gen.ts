@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LemondasRouteImport } from './routes/lemondas'
 import { Route as ErtekelesRouteImport } from './routes/ertekeles'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
+const LemondasRoute = LemondasRouteImport.update({
+  id: '/lemondas',
+  path: '/lemondas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ErtekelesRoute = ErtekelesRouteImport.update({
   id: '/ertekeles',
   path: '/ertekeles',
@@ -33,34 +39,45 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/ertekeles': typeof ErtekelesRoute
+  '/lemondas': typeof LemondasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/ertekeles': typeof ErtekelesRoute
+  '/lemondas': typeof LemondasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/ertekeles': typeof ErtekelesRoute
+  '/lemondas': typeof LemondasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/ertekeles'
+  fullPaths: '/' | '/admin' | '/ertekeles' | '/lemondas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/ertekeles'
-  id: '__root__' | '/' | '/admin' | '/ertekeles'
+  to: '/' | '/admin' | '/ertekeles' | '/lemondas'
+  id: '__root__' | '/' | '/admin' | '/ertekeles' | '/lemondas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   ErtekelesRoute: typeof ErtekelesRoute
+  LemondasRoute: typeof LemondasRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/lemondas': {
+      id: '/lemondas'
+      path: '/lemondas'
+      fullPath: '/lemondas'
+      preLoaderRoute: typeof LemondasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ertekeles': {
       id: '/ertekeles'
       path: '/ertekeles'
@@ -89,17 +106,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   ErtekelesRoute: ErtekelesRoute,
+  LemondasRoute: LemondasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
