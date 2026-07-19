@@ -230,8 +230,9 @@ function Highlights() {
     "Városi rendezvények állandó résztvevője",
   ];
   return (
-    <section className="relative border-t border-hud/15 py-16">
-      <div className="mx-auto max-w-5xl px-6">
+    <section className="relative overflow-hidden border-t border-hud/15 py-16">
+      <Splatter seed={33} count={1} />
+      <div className="relative mx-auto max-w-5xl px-6">
         <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:gap-6">
           {items.map((label) => (
             <div
