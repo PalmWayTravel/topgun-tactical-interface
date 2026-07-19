@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { HudCorners } from "@/components/HudCorners";
 import { Crosshair } from "@/components/Crosshair";
 import { Reveal } from "@/components/Reveal";
+import { Splatter } from "@/components/Splatter";
 
 import heroFallback from "@/assets/hero-fallback.jpg";
 import g1 from "@/assets/gallery-1.jpg";
@@ -108,6 +109,7 @@ function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/40 to-background" />
       {/* HUD grid */}
       <div className="pointer-events-none absolute inset-0 hud-grid opacity-50" aria-hidden />
+      <Splatter seed={11} count={2} />
       {/* HUD corners (full viewport) */}
       <div className="pointer-events-none absolute inset-6" aria-hidden>
         <div className="absolute left-0 top-0 h-6 w-6 border-l border-t border-hud" />
@@ -183,8 +185,9 @@ function Hero() {
 /* ---------------- BRIEFING ---------------- */
 function Briefing() {
   return (
-    <section id="briefing" className="relative border-t border-hud/15 py-28">
+    <section id="briefing" className="relative overflow-hidden border-t border-hud/15 py-28">
       <div className="pointer-events-none absolute inset-0 hud-grid opacity-30" aria-hidden />
+      <Splatter seed={22} count={2} />
       <div className="relative mx-auto max-w-5xl px-6">
         <Reveal>
           <div className="label-mono mb-6">// FILE_001 — TOPGUN/BRIEFING.TXT</div>
@@ -227,8 +230,9 @@ function Highlights() {
     "Városi rendezvények állandó résztvevője",
   ];
   return (
-    <section className="relative border-t border-hud/15 py-16">
-      <div className="mx-auto max-w-5xl px-6">
+    <section className="relative overflow-hidden border-t border-hud/15 py-16">
+      <Splatter seed={33} count={1} />
+      <div className="relative mx-auto max-w-5xl px-6">
         <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:gap-6">
           {items.map((label) => (
             <div
@@ -280,8 +284,9 @@ function Packages() {
     },
   ];
   return (
-    <section id="packages" className="relative border-t border-hud/15 py-28">
+    <section id="packages" className="relative overflow-hidden border-t border-hud/15 py-28">
       <div className="pointer-events-none absolute inset-0 hud-grid opacity-25" aria-hidden />
+      <Splatter seed={44} count={2} />
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// PKG · BEVETÉSI OPCIÓK</div>
@@ -364,8 +369,9 @@ function Gallery() {
     { src: g5, code: "IMG_005", label: "Squad" },
   ];
   return (
-    <section id="gallery" className="relative border-t border-hud/15 py-28">
-      <div className="mx-auto max-w-7xl px-6">
+    <section id="gallery" className="relative overflow-hidden border-t border-hud/15 py-28">
+      <Splatter seed={55} count={2} />
+      <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// FEED · LIVE FRAMES</div>
         </Reveal>
@@ -415,8 +421,9 @@ function Gallery() {
 /* ---------------- KIDS ---------------- */
 function Kids() {
   return (
-    <section id="kids" className="relative border-t border-hud/15 py-28">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2">
+    <section id="kids" className="relative overflow-hidden border-t border-hud/15 py-28">
+      <Splatter seed={66} count={2} />
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2">
         <Reveal>
           <figure className="hud-corners-4 relative overflow-hidden border border-hud/25">
             <HudCorners />
@@ -469,8 +476,9 @@ function Kids() {
 /* ---------------- LOCATION ---------------- */
 function Location() {
   return (
-    <section id="location" className="relative border-t border-hud/15 py-28">
-      <div className="mx-auto max-w-7xl px-6">
+    <section id="location" className="relative overflow-hidden border-t border-hud/15 py-28">
+      <Splatter seed={77} count={1} />
+      <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// GEO · LOCATION LOCK</div>
         </Reveal>
@@ -527,8 +535,9 @@ function Reviews() {
     { n: "Márk P.", r: 5, t: "A gyerek szülinapra is királyság, külön junior pálya, animátor." },
   ];
   return (
-    <section id="reviews" className="relative border-t border-hud/15 py-28">
-      <div className="mx-auto max-w-7xl px-6">
+    <section id="reviews" className="relative overflow-hidden border-t border-hud/15 py-28">
+      <Splatter seed={88} count={2} />
+      <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// FEEDBACK · VERIFIED · GOOGLE</div>
         </Reveal>
