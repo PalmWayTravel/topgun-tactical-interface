@@ -185,8 +185,9 @@ function Hero() {
 /* ---------------- BRIEFING ---------------- */
 function Briefing() {
   return (
-    <section id="briefing" className="relative border-t border-hud/15 py-28">
+    <section id="briefing" className="relative overflow-hidden border-t border-hud/15 py-28">
       <div className="pointer-events-none absolute inset-0 hud-grid opacity-30" aria-hidden />
+      <Splatter seed={22} count={2} />
       <div className="relative mx-auto max-w-5xl px-6">
         <Reveal>
           <div className="label-mono mb-6">// FILE_001 — TOPGUN/BRIEFING.TXT</div>
