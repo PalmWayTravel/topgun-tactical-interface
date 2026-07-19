@@ -369,8 +369,9 @@ function Gallery() {
     { src: g5, code: "IMG_005", label: "Squad" },
   ];
   return (
-    <section id="gallery" className="relative border-t border-hud/15 py-28">
-      <div className="mx-auto max-w-7xl px-6">
+    <section id="gallery" className="relative overflow-hidden border-t border-hud/15 py-28">
+      <Splatter seed={55} count={2} />
+      <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// FEED · LIVE FRAMES</div>
         </Reveal>
