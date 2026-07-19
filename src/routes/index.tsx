@@ -109,6 +109,7 @@ function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/40 to-background" />
       {/* HUD grid */}
       <div className="pointer-events-none absolute inset-0 hud-grid opacity-50" aria-hidden />
+      <Splatter seed={11} count={2} />
       {/* HUD corners (full viewport) */}
       <div className="pointer-events-none absolute inset-6" aria-hidden>
         <div className="absolute left-0 top-0 h-6 w-6 border-l border-t border-hud" />
