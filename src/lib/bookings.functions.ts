@@ -39,10 +39,54 @@ const bookingSchema = z.object({
   phone: z.string().trim().min(6).max(30),
 });
 
+export const SLOT_ERROR = "Ez az időpont már foglalt, kérlek válassz másikat.";
+
+export const TIME_SLOTS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00"] as const;
+
+export const getMonthAvailability = createServerFn({ method: "GET" })
+  .inputValidator((data: unknown) =>
+    z.object({ year: z.number().int().min(2000).max(2100), month: z.number().int().min(1).max(12) }).parse(data),
+  )
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const start = `${data.year}-${String(data.month).padStart(2, "0")}-01`;
+    const endDate = new Date(Date.UTC(data.year, data.month, 1));
+    const end = endDate.toISOString().slice(0, 10);
+    const { data: rows, error } = await supabaseAdmin
+      .from("bookings")
+      .select("booking_date, time_slot")
+      .neq("status", "cancelled")
+      .gte("booking_date", start)
+      .lt("booking_date", end);
+    if (error) {
+      console.error("getMonthAvailability error", error);
+      throw new Error("Nem sikerült betölteni a foglaltságot.");
+    }
+    const booked: Record<string, string[]> = {};
+    for (const r of rows ?? []) {
+      const key = r.booking_date as string;
+      (booked[key] ??= []).push(r.time_slot as string);
+    }
+    return { booked, slots: TIME_SLOTS as unknown as string[] };
+  });
+
 export const createBooking = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => bookingSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: taken, error: checkErr } = await supabaseAdmin
+      .from("bookings")
+      .select("id")
+      .eq("booking_date", data.booking_date)
+      .eq("time_slot", data.time_slot)
+      .neq("status", "cancelled")
+      .limit(1);
+    if (checkErr) {
+      console.error("createBooking check error", checkErr);
+      throw new Error("Nem sikerült rögzíteni a foglalást.");
+    }
+    if (taken && taken.length > 0) throw new Error(SLOT_ERROR);
+
     const { data: row, error } = await supabaseAdmin
       .from("bookings")
       .insert(data)
@@ -50,10 +94,15 @@ export const createBooking = createServerFn({ method: "POST" })
       .single();
     if (error) {
       console.error("createBooking error", error);
+      // 23505 = unique_violation (partial unique index on active slots)
+      if (error.code === "23505" || /duplicate key|unique constraint/i.test(error.message ?? "")) {
+        throw new Error(SLOT_ERROR);
+      }
       throw new Error("Nem sikerült rögzíteni a foglalást.");
     }
     return { id: row.id };
   });
+
 
 const feedbackSchema = z.object({
   booking_id: z.string().uuid().nullable().optional(),
