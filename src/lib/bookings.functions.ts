@@ -39,8 +39,6 @@ const bookingSchema = z.object({
   phone: z.string().trim().min(6).max(30),
 });
 
-const SLOT_ERROR = "Ez az időpont már foglalt, kérlek válassz másikat.";
-
 export const getMonthAvailability = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) =>
     z.object({ year: z.number().int().min(2000).max(2100), month: z.number().int().min(1).max(12) }).parse(data),
@@ -83,7 +81,7 @@ export const createBooking = createServerFn({ method: "POST" })
       console.error("createBooking check error", checkErr);
       throw new Error("Nem sikerült rögzíteni a foglalást.");
     }
-    if (taken && taken.length > 0) throw new Error(SLOT_ERROR);
+    if (taken && taken.length > 0) throw new Error("Ez az időpont már foglalt, kérlek válassz másikat.");
 
     const { data: row, error } = await supabaseAdmin
       .from("bookings")
@@ -94,7 +92,7 @@ export const createBooking = createServerFn({ method: "POST" })
       console.error("createBooking error", error);
       // 23505 = unique_violation (partial unique index on active slots)
       if (error.code === "23505" || /duplicate key|unique constraint/i.test(error.message ?? "")) {
-        throw new Error(SLOT_ERROR);
+        throw new Error("Ez az időpont már foglalt, kérlek válassz másikat.");
       }
       throw new Error("Nem sikerült rögzíteni a foglalást.");
     }

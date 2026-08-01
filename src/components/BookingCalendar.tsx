@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { HudCorners } from "@/components/HudCorners";
-import { createBooking } from "@/lib/bookings.functions";
+import { createBooking, getMonthAvailability } from "@/lib/bookings.functions";
 
 const HU_MONTHS = [
   "Január", "Február", "Március", "Április", "Május", "Június",
@@ -9,14 +9,11 @@ const HU_MONTHS = [
 ];
 const HU_DOW = ["H", "K", "Sz", "Cs", "P", "Sz", "V"];
 
-const TIME_SLOTS = [
-  { t: "09:00", status: "open" },
-  { t: "11:00", status: "open" },
-  { t: "13:00", status: "hot" },
-  { t: "15:00", status: "open" },
-  { t: "17:00", status: "locked" },
-  { t: "19:00", status: "open" },
-];
+const TIME_SLOTS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00"];
+
+function dateKey(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
 
 const PACKAGES = [
   { code: "PKG-01", name: "Gyerek" },
@@ -57,6 +54,34 @@ export function BookingCalendar() {
   >({ status: "idle" });
 
   const submitBooking = useServerFn(createBooking);
+  const fetchAvailability = useServerFn(getMonthAvailability);
+
+  const [booked, setBooked] = useState<Record<string, string[]>>({});
+  const [availLoading, setAvailLoading] = useState(true);
+
+  const loadAvailability = useCallback(
+    async (year: number, month: number) => {
+      setAvailLoading(true);
+      try {
+        const res = await fetchAvailability({ data: { year, month: month + 1 } });
+        setBooked(res.booked ?? {});
+      } catch {
+        setBooked({});
+      } finally {
+        setAvailLoading(false);
+      }
+    },
+    [fetchAvailability],
+  );
+
+  useEffect(() => {
+    void loadAvailability(cursor.getFullYear(), cursor.getMonth());
+  }, [cursor, loadAvailability]);
+
+  const bookedForSelected = useMemo(
+    () => (selected ? (booked[dateKey(selected)] ?? []) : []),
+    [booked, selected],
+  );
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const phoneValid = phone.trim().replace(/[^\d]/g, "").length >= 7;
@@ -69,12 +94,9 @@ export function BookingCalendar() {
     setSubmitting(true);
     setSubmitState({ status: "idle" });
     try {
-      const y = selected.getFullYear();
-      const m = String(selected.getMonth() + 1).padStart(2, "0");
-      const d = String(selected.getDate()).padStart(2, "0");
       const res = await submitBooking({
         data: {
-          booking_date: `${y}-${m}-${d}`,
+          booking_date: dateKey(selected),
           time_slot: slot,
           package_code: pkg,
           squad_size: squad,
@@ -84,6 +106,7 @@ export function BookingCalendar() {
         },
       });
       setSubmitState({ status: "success", id: res.id });
+      void loadAvailability(cursor.getFullYear(), cursor.getMonth());
       setSelected(null);
       setSlot(null);
       setName("");
@@ -94,6 +117,7 @@ export function BookingCalendar() {
         status: "error",
         message: err instanceof Error ? err.message : "Ismeretlen hiba.",
       });
+      void loadAvailability(cursor.getFullYear(), cursor.getMonth());
     } finally {
       setSubmitting(false);
     }
@@ -111,13 +135,12 @@ export function BookingCalendar() {
     setSlot(null);
   };
 
-  // Deterministic "load" per date — visual only
+  // Real availability based on active bookings
   const dayStatus = (d: Date) => {
-    const k = d.getDate() + d.getMonth() * 31;
     if (d < today) return "past";
-    const r = (k * 13) % 10;
-    if (r < 1) return "full";
-    if (r < 4) return "hot";
+    const taken = booked[dateKey(d)]?.length ?? 0;
+    if (taken >= TIME_SLOTS.length) return "full";
+    if (taken > 0) return "hot";
     return "open";
   };
 
@@ -303,17 +326,26 @@ export function BookingCalendar() {
             <div className="mt-6">
               <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em] text-hud">
                 Idősáv
+                {selected && (
+                  <span className="ml-2 text-cream-dim">
+                    {availLoading
+                      ? "· SYNC…"
+                      : `· ${TIME_SLOTS.length - bookedForSelected.length} szabad`}
+                  </span>
+                )}
               </div>
               <div className="grid grid-cols-3 gap-2">
-                {TIME_SLOTS.map((s) => {
-                  const dis = !selected || s.status === "locked";
-                  const sel = slot === s.t;
+                {TIME_SLOTS.map((t) => {
+                  const isBooked = bookedForSelected.includes(t);
+                  const dis = !selected || isBooked || availLoading;
+                  const sel = slot === t;
                   return (
                     <button
-                      key={s.t}
+                      key={t}
                       disabled={dis}
                       data-hover={!dis || undefined}
-                      onClick={() => setSlot(s.t)}
+                      onClick={() => setSlot(t)}
+                      title={isBooked ? "Foglalt" : undefined}
                       className={[
                         "relative border py-2.5 font-mono text-xs tracking-wider transition",
                         sel
@@ -323,19 +355,15 @@ export function BookingCalendar() {
                             : "border-hud/30 text-cream hover:border-hud hover:bg-hud/10",
                       ].join(" ")}
                     >
-                      {s.t}
-                      {s.status === "hot" && !sel && !dis && (
-                        <span className="absolute right-1 top-1 h-1 w-1 animate-hud-pulse rounded-full bg-hud" />
-                      )}
-                      {s.status === "locked" && (
-                        <span className="absolute right-1 top-1 font-mono text-[8px] text-cream-dim/50">
-                          ✕
+                      {t}
+                      {isBooked && (
+                        <span className="absolute inset-x-0 bottom-0.5 font-mono text-[8px] uppercase tracking-[0.2em] text-cream-dim/50">
+                          Foglalt
                         </span>
                       )}
                     </button>
                   );
                 })}
-              </div>
             </div>
 
             {/* package */}
