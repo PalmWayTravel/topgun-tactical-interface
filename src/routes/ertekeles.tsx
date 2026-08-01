@@ -6,7 +6,7 @@ import { HudCorners } from "@/components/HudCorners";
 import { createFeedback } from "@/lib/bookings.functions";
 
 const GOOGLE_REVIEW_URL =
-  "https://search.google.com/local/writereview?placeid=551830676271512692";
+  "https://search.google.com/local/writereview?placeid=ChIJLbCMD3GBR0cRdLxTixN_qAc";
 
 const searchSchema = z.object({
   booking_id: z.string().uuid().optional(),
