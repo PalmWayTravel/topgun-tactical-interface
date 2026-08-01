@@ -39,9 +39,7 @@ const bookingSchema = z.object({
   phone: z.string().trim().min(6).max(30),
 });
 
-export const SLOT_ERROR = "Ez az időpont már foglalt, kérlek válassz másikat.";
-
-export const TIME_SLOTS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00"] as const;
+const SLOT_ERROR = "Ez az időpont már foglalt, kérlek válassz másikat.";
 
 export const getMonthAvailability = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) =>
@@ -67,7 +65,7 @@ export const getMonthAvailability = createServerFn({ method: "GET" })
       const key = r.booking_date as string;
       (booked[key] ??= []).push(r.time_slot as string);
     }
-    return { booked, slots: TIME_SLOTS as unknown as string[] };
+    return { booked };
   });
 
 export const createBooking = createServerFn({ method: "POST" })
