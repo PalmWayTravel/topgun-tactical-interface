@@ -522,6 +522,22 @@ function Location() {
             </div>
           </div>
         </Reveal>
+        <Reveal delay={380}>
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=Top+Gun+Paintball+Ny%C3%ADrb%C3%A1tor+Bakonyikert"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost-hud"
+            >
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                <path d="M9 20l-5.447-9.894A8 8 0 1118.447 10.106L13 20H9z" />
+                <circle cx="12" cy="10" r="2.5" />
+              </svg>
+              Útvonalterv kérése
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
