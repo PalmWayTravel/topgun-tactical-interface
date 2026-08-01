@@ -23,6 +23,7 @@ export type Database = {
           name: string
           package_code: string
           phone: string
+          review_due_at: string | null
           review_requested_at: string | null
           squad_size: number
           status: string
@@ -36,6 +37,7 @@ export type Database = {
           name: string
           package_code: string
           phone: string
+          review_due_at?: string | null
           review_requested_at?: string | null
           squad_size: number
           status?: string
@@ -49,6 +51,7 @@ export type Database = {
           name?: string
           package_code?: string
           phone?: string
+          review_due_at?: string | null
           review_requested_at?: string | null
           squad_size?: number
           status?: string
@@ -96,7 +99,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      process_due_reviews: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
