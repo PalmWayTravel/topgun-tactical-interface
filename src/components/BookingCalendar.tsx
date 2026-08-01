@@ -364,7 +364,9 @@ export function BookingCalendar() {
                     </button>
                   );
                 })}
+              </div>
             </div>
+
 
             {/* package */}
             <div className="mt-6">
