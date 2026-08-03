@@ -7,6 +7,7 @@ import { Splatter } from "@/components/Splatter";
 
 import heroFallback from "@/assets/hero-fallback.jpg";
 import heroVideo from "@/assets/topgun-hero.mp4.asset.json";
+import logoAsset from "@/assets/topgun-logo.png.asset.json";
 
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
@@ -20,26 +21,15 @@ export const Route = createFileRoute("/")({
   component: TopGunPage,
 });
 
-/* ---------------- LOGO PLACEHOLDER ---------------- */
-function Logo({ className = "" }: { className?: string }) {
+/* ---------------- LOGO ---------------- */
+function Logo({ className = "", size = "h-10" }: { className?: string; size?: string }) {
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      <svg viewBox="0 0 40 40" className="h-8 w-8" aria-hidden>
-        <circle cx="20" cy="20" r="18" fill="none" stroke="#F4A11D" strokeWidth="1.5" />
-        <circle cx="20" cy="20" r="10" fill="none" stroke="#F4A11D" strokeWidth="1" />
-        <circle cx="20" cy="20" r="2" fill="#F4A11D" />
-        <line x1="20" y1="2" x2="20" y2="10" stroke="#F4A11D" strokeWidth="1.5" />
-        <line x1="20" y1="30" x2="20" y2="38" stroke="#F4A11D" strokeWidth="1.5" />
-        <line x1="2" y1="20" x2="10" y2="20" stroke="#F4A11D" strokeWidth="1.5" />
-        <line x1="30" y1="20" x2="38" y2="20" stroke="#F4A11D" strokeWidth="1.5" />
-      </svg>
-      <div className="leading-none">
-        <div className="font-display text-xl font-bold uppercase tracking-[0.18em] text-cream">
-          Top<span className="text-hud">Gun</span>
-        </div>
-        <div className="font-mono text-[8px] uppercase tracking-[0.3em] text-cream-dim">Paintball · Tactical Field</div>
-      </div>
-    </div>
+    <img
+      src={logoAsset.url}
+      alt="Top Gun Paintball logó"
+      className={`${size} w-auto select-none ${className}`}
+      draggable={false}
+    />
   );
 }
 
@@ -648,7 +638,8 @@ function Footer() {
   return (
     <footer className="border-t border-hud/15 py-10">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
-        <Logo />
+        <Logo size="h-12" />
+
         <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream-dim">
           © {new Date().getFullYear()} Top Gun Paintball · Nyírbátor · All Sectors Reserved
         </div>
