@@ -90,16 +90,21 @@ function Header() {
 function Hero() {
   return (
     <section id="top" className="relative isolate h-[100svh] min-h-[640px] w-full overflow-hidden hud-scanlines">
-      {/* Background fallback image — replaced by video when available */}
+      {/* Background video (poster = static fallback) */}
       <div className="absolute inset-0">
-        <img
-          src={heroFallback}
-          alt=""
-          className="h-full w-full object-cover opacity-70 motion-safe:animate-glow-drift"
-          width={1920}
-          height={1080}
+        <video
+          src={heroVideo.url}
+          poster={heroFallback}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden
+          className="h-full w-full object-cover opacity-70"
         />
       </div>
+
       {/* Animated moving smoke / amber wash */}
       <div className="pointer-events-none absolute inset-0 motion-safe:animate-glow-drift" aria-hidden>
         <div className="absolute -left-[20%] top-[10%] h-[60vh] w-[60vh] rounded-full bg-hud/15 blur-[120px]" />
