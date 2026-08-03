@@ -144,6 +144,16 @@ export function BookingCalendar() {
     return "open";
   };
 
+  // Slots earlier than the current hour are expired (today only)
+  const isPastSlot = (d: Date | null, t: string) => {
+    if (!d) return false;
+    const now = new Date();
+    if (dateKey(d) !== dateKey(now)) return false;
+    const [h, m] = t.split(":").map(Number);
+    return (h ?? 0) * 60 + (m ?? 0) <= now.getHours() * 60 + now.getMinutes();
+  };
+
+
   const isSelected = (d: Date | null) =>
     !!(d && selected && d.getTime() === selected.getTime());
 
