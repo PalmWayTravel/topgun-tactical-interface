@@ -6,6 +6,8 @@ import { Reveal } from "@/components/Reveal";
 import { Splatter } from "@/components/Splatter";
 
 import heroFallback from "@/assets/hero-fallback.jpg";
+import heroVideo from "@/assets/topgun-hero.mp4.asset.json";
+
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
 import g3 from "@/assets/gallery-3.jpg";
