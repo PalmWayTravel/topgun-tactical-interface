@@ -20,26 +20,15 @@ export const Route = createFileRoute("/")({
   component: TopGunPage,
 });
 
-/* ---------------- LOGO PLACEHOLDER ---------------- */
-function Logo({ className = "" }: { className?: string }) {
+/* ---------------- LOGO ---------------- */
+function Logo({ className = "", size = "h-10" }: { className?: string; size?: string }) {
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      <svg viewBox="0 0 40 40" className="h-8 w-8" aria-hidden>
-        <circle cx="20" cy="20" r="18" fill="none" stroke="#F4A11D" strokeWidth="1.5" />
-        <circle cx="20" cy="20" r="10" fill="none" stroke="#F4A11D" strokeWidth="1" />
-        <circle cx="20" cy="20" r="2" fill="#F4A11D" />
-        <line x1="20" y1="2" x2="20" y2="10" stroke="#F4A11D" strokeWidth="1.5" />
-        <line x1="20" y1="30" x2="20" y2="38" stroke="#F4A11D" strokeWidth="1.5" />
-        <line x1="2" y1="20" x2="10" y2="20" stroke="#F4A11D" strokeWidth="1.5" />
-        <line x1="30" y1="20" x2="38" y2="20" stroke="#F4A11D" strokeWidth="1.5" />
-      </svg>
-      <div className="leading-none">
-        <div className="font-display text-xl font-bold uppercase tracking-[0.18em] text-cream">
-          Top<span className="text-hud">Gun</span>
-        </div>
-        <div className="font-mono text-[8px] uppercase tracking-[0.3em] text-cream-dim">Paintball · Tactical Field</div>
-      </div>
-    </div>
+    <img
+      src={logoAsset.url}
+      alt="Top Gun Paintball logó"
+      className={`${size} w-auto select-none ${className}`}
+      draggable={false}
+    />
   );
 }
 
