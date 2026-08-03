@@ -69,7 +69,21 @@ export const getMonthAvailability = createServerFn({ method: "GET" })
 export const createBooking = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => bookingSchema.parse(data))
   .handler(async ({ data }) => {
+    // Past-time check in Europe/Budapest
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Budapest",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hour12: false,
+    }).formatToParts(new Date());
+    const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "00";
+    const nowKey = `${get("year")}-${get("month")}-${get("day")} ${get("hour")}:${get("minute")}`;
+    const slotKey = `${data.booking_date} ${data.time_slot}`;
+    if (slotKey < nowKey) {
+      throw new Error("Ez az időpont már elmúlt, kérlek válassz jövőbeli időpontot.");
+    }
+
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
     const { data: taken, error: checkErr } = await supabaseAdmin
       .from("bookings")
       .select("id")

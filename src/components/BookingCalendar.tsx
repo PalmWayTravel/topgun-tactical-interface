@@ -144,6 +144,16 @@ export function BookingCalendar() {
     return "open";
   };
 
+  // Slots earlier than the current hour are expired (today only)
+  const isPastSlot = (d: Date | null, t: string) => {
+    if (!d) return false;
+    const now = new Date();
+    if (dateKey(d) !== dateKey(now)) return false;
+    const [h, m] = t.split(":").map(Number);
+    return (h ?? 0) * 60 + (m ?? 0) <= now.getHours() * 60 + now.getMinutes();
+  };
+
+
   const isSelected = (d: Date | null) =>
     !!(d && selected && d.getTime() === selected.getTime());
 
@@ -337,7 +347,8 @@ export function BookingCalendar() {
               <div className="grid grid-cols-3 gap-2">
                 {TIME_SLOTS.map((t) => {
                   const isBooked = bookedForSelected.includes(t);
-                  const dis = !selected || isBooked || availLoading;
+                  const isExpired = isPastSlot(selected, t);
+                  const dis = !selected || isBooked || isExpired || availLoading;
                   const sel = slot === t;
                   return (
                     <button
@@ -345,7 +356,7 @@ export function BookingCalendar() {
                       disabled={dis}
                       data-hover={!dis || undefined}
                       onClick={() => setSlot(t)}
-                      title={isBooked ? "Foglalt" : undefined}
+                      title={isBooked ? "Foglalt" : isExpired ? "Lejárt" : undefined}
                       className={[
                         "relative border py-2.5 font-mono text-xs tracking-wider transition",
                         sel
@@ -356,14 +367,15 @@ export function BookingCalendar() {
                       ].join(" ")}
                     >
                       {t}
-                      {isBooked && (
+                      {(isBooked || isExpired) && (
                         <span className="absolute inset-x-0 bottom-0.5 font-mono text-[8px] uppercase tracking-[0.2em] text-cream-dim/50">
-                          Foglalt
+                          {isBooked ? "Foglalt" : "Lejárt"}
                         </span>
                       )}
                     </button>
                   );
                 })}
+
               </div>
             </div>
 
