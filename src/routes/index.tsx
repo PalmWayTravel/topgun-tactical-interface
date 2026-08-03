@@ -7,6 +7,7 @@ import { Splatter } from "@/components/Splatter";
 
 import heroFallback from "@/assets/hero-fallback.jpg";
 import heroVideo from "@/assets/topgun-hero.mp4.asset.json";
+import logoAsset from "@/assets/topgun-logo.png.asset.json";
 
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
