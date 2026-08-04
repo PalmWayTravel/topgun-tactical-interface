@@ -425,7 +425,7 @@ function Kids() {
           <figure className="hud-corners-4 relative overflow-hidden border border-hud/25">
             <HudCorners />
             <img
-              src={kidsImg}
+              src={kidsAsset.url}
               alt="Gyerek paintball csapat"
               loading="lazy"
               width={1280}
