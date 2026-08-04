@@ -359,11 +359,11 @@ function Packages() {
 /* ---------------- GALLERY ---------------- */
 function Gallery() {
   const imgs = [
-    { src: g1, code: "IMG_001", label: "Engage" },
-    { src: g2, code: "IMG_002", label: "Bunker" },
+    { src: squad1Asset.url, code: "IMG_001", label: "Squad" },
+    { src: squad2Asset.url, code: "IMG_002", label: "Team Ops" },
     { src: g3, code: "IMG_003", label: "Sunset Ops" },
-    { src: g4, code: "IMG_004", label: "Gear" },
-    { src: g5, code: "IMG_005", label: "Squad" },
+    { src: gear1Asset.url, code: "IMG_004", label: "Gear" },
+    { src: gear2Asset.url, code: "IMG_005", label: "Marker" },
   ];
   return (
     <section id="gallery" className="relative overflow-hidden border-t border-hud/15 py-28">
