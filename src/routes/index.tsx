@@ -9,12 +9,12 @@ import heroFallback from "@/assets/hero-fallback.jpg";
 import heroVideo from "@/assets/topgun-hero.mp4.asset.json";
 import logoAsset from "@/assets/topgun-logo.png.asset.json";
 
-import g1 from "@/assets/gallery-1.jpg";
-import g2 from "@/assets/gallery-2.jpg";
+import squad1Asset from "@/assets/real-squad-1.jpg.asset.json";
+import squad2Asset from "@/assets/real-squad-2.jpg.asset.json";
 import g3 from "@/assets/gallery-3.jpg";
-import g4 from "@/assets/gallery-4.jpg";
-import g5 from "@/assets/gallery-5.jpg";
-import kidsImg from "@/assets/kids.jpg";
+import gear1Asset from "@/assets/real-gear-1.jpg.asset.json";
+import gear2Asset from "@/assets/real-gear-2.jpg.asset.json";
+import kidsAsset from "@/assets/real-kids.jpg.asset.json";
 import { BookingCalendar } from "@/components/BookingCalendar";
 
 export const Route = createFileRoute("/")({
