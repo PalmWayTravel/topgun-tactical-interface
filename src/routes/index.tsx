@@ -9,12 +9,12 @@ import heroFallback from "@/assets/hero-fallback.jpg";
 import heroVideo from "@/assets/topgun-hero.mp4.asset.json";
 import logoAsset from "@/assets/topgun-logo.png.asset.json";
 
-import g1 from "@/assets/gallery-1.jpg";
-import g2 from "@/assets/gallery-2.jpg";
+import squad1Asset from "@/assets/real-squad-1.jpg.asset.json";
+import squad2Asset from "@/assets/real-squad-2.jpg.asset.json";
 import g3 from "@/assets/gallery-3.jpg";
-import g4 from "@/assets/gallery-4.jpg";
-import g5 from "@/assets/gallery-5.jpg";
-import kidsImg from "@/assets/kids.jpg";
+import gear1Asset from "@/assets/real-gear-1.jpg.asset.json";
+import gear2Asset from "@/assets/real-gear-2.jpg.asset.json";
+import kidsAsset from "@/assets/real-kids.jpg.asset.json";
 import { BookingCalendar } from "@/components/BookingCalendar";
 
 export const Route = createFileRoute("/")({
@@ -359,11 +359,11 @@ function Packages() {
 /* ---------------- GALLERY ---------------- */
 function Gallery() {
   const imgs = [
-    { src: g1, code: "IMG_001", label: "Engage" },
-    { src: g2, code: "IMG_002", label: "Bunker" },
+    { src: squad1Asset.url, code: "IMG_001", label: "Squad" },
+    { src: squad2Asset.url, code: "IMG_002", label: "Team Ops" },
     { src: g3, code: "IMG_003", label: "Sunset Ops" },
-    { src: g4, code: "IMG_004", label: "Gear" },
-    { src: g5, code: "IMG_005", label: "Squad" },
+    { src: gear1Asset.url, code: "IMG_004", label: "Gear" },
+    { src: gear2Asset.url, code: "IMG_005", label: "Marker" },
   ];
   return (
     <section id="gallery" className="relative overflow-hidden border-t border-hud/15 py-28">
@@ -425,7 +425,7 @@ function Kids() {
           <figure className="hud-corners-4 relative overflow-hidden border border-hud/25">
             <HudCorners />
             <img
-              src={kidsImg}
+              src={kidsAsset.url}
               alt="Gyerek paintball csapat"
               loading="lazy"
               width={1280}
