@@ -48,6 +48,7 @@ export function BookingCalendar() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [consent, setConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitState, setSubmitState] = useState<
     { status: "idle" } | { status: "success"; id: string } | { status: "error"; message: string }
