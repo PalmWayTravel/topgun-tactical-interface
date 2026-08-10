@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LemondasRouteImport } from './routes/lemondas'
 import { Route as ErtekelesRouteImport } from './routes/ertekeles'
+import { Route as AszfRouteImport } from './routes/aszf'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AdatkezelesRouteImport } from './routes/adatkezeles'
 import { Route as IndexRouteImport } from './routes/index'
 
 const LemondasRoute = LemondasRouteImport.update({
@@ -24,9 +26,19 @@ const ErtekelesRoute = ErtekelesRouteImport.update({
   path: '/ertekeles',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AszfRoute = AszfRouteImport.update({
+  id: '/aszf',
+  path: '/aszf',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdatkezelesRoute = AdatkezelesRouteImport.update({
+  id: '/adatkezeles',
+  path: '/adatkezeles',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,34 +49,55 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/adatkezeles': typeof AdatkezelesRoute
   '/admin': typeof AdminRoute
+  '/aszf': typeof AszfRoute
   '/ertekeles': typeof ErtekelesRoute
   '/lemondas': typeof LemondasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/adatkezeles': typeof AdatkezelesRoute
   '/admin': typeof AdminRoute
+  '/aszf': typeof AszfRoute
   '/ertekeles': typeof ErtekelesRoute
   '/lemondas': typeof LemondasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/adatkezeles': typeof AdatkezelesRoute
   '/admin': typeof AdminRoute
+  '/aszf': typeof AszfRoute
   '/ertekeles': typeof ErtekelesRoute
   '/lemondas': typeof LemondasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/ertekeles' | '/lemondas'
+  fullPaths:
+    | '/'
+    | '/adatkezeles'
+    | '/admin'
+    | '/aszf'
+    | '/ertekeles'
+    | '/lemondas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/ertekeles' | '/lemondas'
-  id: '__root__' | '/' | '/admin' | '/ertekeles' | '/lemondas'
+  to: '/' | '/adatkezeles' | '/admin' | '/aszf' | '/ertekeles' | '/lemondas'
+  id:
+    | '__root__'
+    | '/'
+    | '/adatkezeles'
+    | '/admin'
+    | '/aszf'
+    | '/ertekeles'
+    | '/lemondas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdatkezelesRoute: typeof AdatkezelesRoute
   AdminRoute: typeof AdminRoute
+  AszfRoute: typeof AszfRoute
   ErtekelesRoute: typeof ErtekelesRoute
   LemondasRoute: typeof LemondasRoute
 }
@@ -85,11 +118,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ErtekelesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aszf': {
+      id: '/aszf'
+      path: '/aszf'
+      fullPath: '/aszf'
+      preLoaderRoute: typeof AszfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/adatkezeles': {
+      id: '/adatkezeles'
+      path: '/adatkezeles'
+      fullPath: '/adatkezeles'
+      preLoaderRoute: typeof AdatkezelesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -104,7 +151,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdatkezelesRoute: AdatkezelesRoute,
   AdminRoute: AdminRoute,
+  AszfRoute: AszfRoute,
   ErtekelesRoute: ErtekelesRoute,
   LemondasRoute: LemondasRoute,
 }

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { HudCorners } from "@/components/HudCorners";
 import { Crosshair } from "@/components/Crosshair";
@@ -639,6 +639,15 @@ function Footer() {
     <footer className="border-t border-hud/15 py-10">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
         <Logo size="h-12" />
+
+        <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim">
+          <Link to="/adatkezeles" className="transition-colors hover:text-hud">
+            Adatkezelési tájékoztató
+          </Link>
+          <Link to="/aszf" className="transition-colors hover:text-hud">
+            ÁSZF
+          </Link>
+        </nav>
 
         <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream-dim">
           © {new Date().getFullYear()} Top Gun Paintball · Nyírbátor · All Sectors Reserved
