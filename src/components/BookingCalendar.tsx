@@ -88,10 +88,10 @@ export function BookingCalendar() {
   const phoneValid = phone.trim().replace(/[^\d]/g, "").length >= 7;
   const nameValid = name.trim().length >= 2;
   const contactValid = nameValid && emailValid && phoneValid;
-  const canDeploy = !!selected && !!slot && contactValid && !submitting;
+  const canDeploy = !!selected && !!slot && contactValid && consent && !submitting;
 
   const handleSubmit = async () => {
-    if (!selected || !slot || !contactValid) return;
+    if (!selected || !slot || !contactValid || !consent) return;
     setSubmitting(true);
     setSubmitState({ status: "idle" });
     try {
