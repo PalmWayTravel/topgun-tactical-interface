@@ -478,12 +478,42 @@ export function BookingCalendar() {
               </p>
             </div>
 
+            {/* consent */}
+            <label className="mt-6 flex cursor-pointer items-start gap-3 text-[12px] leading-snug text-cream-dim">
+              <input
+                type="checkbox"
+                checked={consent}
+                onChange={(e) => setConsent(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--hud)]"
+              />
+              <span>
+                Elfogadom az{" "}
+                <a
+                  href="/aszf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-hud underline underline-offset-2"
+                >
+                  ÁSZF
+                </a>
+                -et és az{" "}
+                <a
+                  href="/adatkezeles"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-hud underline underline-offset-2"
+                >
+                  Adatkezelési tájékoztatót
+                </a>
+              </span>
+            </label>
+
             {/* deploy */}
             <button
               disabled={!canDeploy}
               data-hover={canDeploy ? true : undefined}
               onClick={handleSubmit}
-              className="btn-deploy mt-6 w-full justify-center disabled:opacity-40"
+              className="btn-deploy mt-4 w-full justify-center disabled:opacity-40"
             >
               <span className="font-mono text-[10px] opacity-70">›››</span>
               {submitting
@@ -492,7 +522,9 @@ export function BookingCalendar() {
                   ? "Válassz dátumot + időt"
                   : !contactValid
                     ? "Add meg az elérhetőséged"
-                    : "Bevetés foglalása"}
+                    : !consent
+                      ? "Fogadd el a feltételeket"
+                      : "Bevetés foglalása"}
             </button>
             {submitState.status === "success" && (
               <div className="mt-4 border border-hud/60 bg-hud/10 p-3 font-mono text-[11px] uppercase tracking-[0.2em] text-hud">
