@@ -222,27 +222,18 @@ function Briefing() {
 
 /* ---------------- HIGHLIGHTS ---------------- */
 function Highlights() {
-  const items = [
-    "1 pálya / szektor",
-    "Városi rendezvények állandó résztvevője",
-  ];
   return (
     <section className="relative overflow-hidden border-t border-hud/15 py-16">
       <Splatter seed={33} count={1} />
       <div className="relative mx-auto max-w-5xl px-6">
-        <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:gap-6">
-          {items.map((label) => (
-            <div
-              key={label}
-              className="hud-corners-4 relative flex-1 border border-hud/30 bg-surface/60 px-6 py-5 text-center"
-            >
-              <HudCorners />
-              <div className="flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-cream sm:text-sm">
-                <span className="h-1.5 w-1.5 shrink-0 bg-hud animate-hud-pulse" />
-                <span>{label}</span>
-              </div>
+        <div className="flex justify-center">
+          <div className="hud-corners-4 relative inline-flex max-w-3xl items-center justify-center border-2 border-hud bg-surface/70 px-10 py-7 text-center shadow-[0_0_50px_-12px_oklch(0.78_0.17_65/0.55)]">
+            <HudCorners />
+            <div className="flex items-center justify-center gap-4 font-mono text-sm uppercase tracking-[0.25em] text-cream sm:text-base md:text-lg">
+              <span className="h-2 w-2 shrink-0 bg-hud animate-hud-pulse shadow-[0_0_10px_var(--hud)]" />
+              <span>Városi rendezvények állandó résztvevője</span>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
