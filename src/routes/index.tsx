@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { HudCorners } from "@/components/HudCorners";
 import { Crosshair } from "@/components/Crosshair";
