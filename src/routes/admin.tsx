@@ -3,13 +3,17 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { HudCorners } from "@/components/HudCorners";
 import {
+  addBlockedDate,
   adminLogin,
   adminLogout,
   adminStatus,
+  deleteBlockedDate,
+  listBlockedDates,
   listBookings,
   listFeedback,
   updateBookingStatus,
 } from "@/lib/bookings.functions";
+
 
 const STATUS_OPTIONS = [
   { value: "pending", label: "Függőben" },
@@ -150,7 +154,7 @@ function AdminPage() {
 function AdminConsole({ onLogout }: { onLogout: () => void }) {
   const fetchBookings = useServerFn(listBookings);
   const fetchFeedback = useServerFn(listFeedback);
-  const [tab, setTab] = useState<"bookings" | "feedback">("bookings");
+  const [tab, setTab] = useState<"bookings" | "feedback" | "closures">("bookings");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
@@ -185,8 +189,8 @@ function AdminConsole({ onLogout }: { onLogout: () => void }) {
       </header>
 
       <div className="px-6 py-6">
-        <div className="mb-6 flex gap-2">
-          {(["bookings", "feedback"] as const).map((t) => (
+        <div className="mb-6 flex flex-wrap gap-2">
+          {(["bookings", "feedback", "closures"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -197,12 +201,18 @@ function AdminConsole({ onLogout }: { onLogout: () => void }) {
                   : "border-hud/30 text-cream-dim hover:border-hud/60 hover:text-cream",
               ].join(" ")}
             >
-              {t === "bookings" ? `Foglalások (${bookings.length})` : `Értékelések (${feedback.length})`}
+              {t === "bookings"
+                ? `Foglalások (${bookings.length})`
+                : t === "feedback"
+                  ? `Értékelések (${feedback.length})`
+                  : "Zárva tartás"}
             </button>
           ))}
         </div>
 
-        {loading ? (
+        {tab === "closures" ? (
+          <ClosuresPanel />
+        ) : loading ? (
           <div className="font-mono text-xs uppercase tracking-[0.3em] text-cream-dim">
             // BETÖLTÉS...
           </div>
@@ -216,6 +226,7 @@ function AdminConsole({ onLogout }: { onLogout: () => void }) {
         ) : (
           <FeedbackTable rows={feedback} />
         )}
+
       </div>
     </main>
   );
@@ -389,4 +400,187 @@ function Th({ children }: { children: React.ReactNode }) {
 }
 function Td({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return <td className={`px-3 py-2 align-middle ${className}`}>{children}</td>;
+}
+
+type Closure = {
+  id: string;
+  start_date: string;
+  end_date: string;
+  reason: string | null;
+  created_at: string;
+};
+
+function ClosuresPanel() {
+  const fetchClosures = useServerFn(listBlockedDates);
+  const addClosure = useServerFn(addBlockedDate);
+  const removeClosure = useServerFn(deleteBlockedDate);
+
+  const [rows, setRows] = useState<Closure[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const [reason, setReason] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchClosures()
+      .then((d) => setRows(d as Closure[]))
+      .catch(() => setErr("Nem sikerült betölteni a zárásokat."))
+      .finally(() => setLoading(false));
+  }, [fetchClosures]);
+
+  const handleAdd = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!start) return;
+    const endDate = end || start;
+    if (endDate < start) {
+      setErr("A záró dátum nem lehet korábbi a kezdő dátumnál.");
+      return;
+    }
+    setBusy(true);
+    setErr(null);
+    try {
+      const row = (await addClosure({
+        data: { start_date: start, end_date: endDate, reason: reason.trim() || null },
+      })) as Closure;
+      setRows((prev) =>
+        [...prev, row].sort((a, b) => a.start_date.localeCompare(b.start_date)),
+      );
+      setStart("");
+      setEnd("");
+      setReason("");
+    } catch (e2) {
+      setErr(e2 instanceof Error ? e2.message : "Nem sikerült rögzíteni a zárást.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const prev = rows;
+    setRows((r) => r.filter((x) => x.id !== id));
+    try {
+      await removeClosure({ data: { id } });
+    } catch {
+      setRows(prev);
+      setErr("Nem sikerült törölni a zárást.");
+    }
+  };
+
+  const fmt = (d: string) => new Date(`${d}T00:00:00`).toLocaleDateString("hu-HU");
+
+  return (
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,380px)_1fr]">
+      <form
+        onSubmit={handleAdd}
+        className="hud-corners-4 relative border border-hud/30 bg-surface/50 p-6"
+      >
+        <HudCorners />
+        <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-hud">
+          // NEW CLOSURE
+        </div>
+        <h2 className="mt-1 font-display text-xl font-bold uppercase text-cream">
+          Zárás <span className="text-hud">hozzáadása</span>
+        </h2>
+
+        <label className="mt-5 block">
+          <div className="mb-1 font-mono text-[9px] uppercase tracking-[0.3em] text-cream-dim">
+            Kezdő dátum
+          </div>
+          <input
+            type="date"
+            value={start}
+            onChange={(e) => setStart(e.target.value)}
+            required
+            className="w-full border border-hud/30 bg-background/40 px-3 py-2 font-mono text-sm text-cream outline-none focus:border-hud"
+          />
+        </label>
+
+        <label className="mt-4 block">
+          <div className="mb-1 font-mono text-[9px] uppercase tracking-[0.3em] text-cream-dim">
+            Záró dátum (üresen = egy nap)
+          </div>
+          <input
+            type="date"
+            value={end}
+            min={start || undefined}
+            onChange={(e) => setEnd(e.target.value)}
+            className="w-full border border-hud/30 bg-background/40 px-3 py-2 font-mono text-sm text-cream outline-none focus:border-hud"
+          />
+        </label>
+
+        <label className="mt-4 block">
+          <div className="mb-1 font-mono text-[9px] uppercase tracking-[0.3em] text-cream-dim">
+            Megjegyzés (opcionális)
+          </div>
+          <input
+            type="text"
+            value={reason}
+            maxLength={200}
+            placeholder="pl. Nyári szabadság"
+            onChange={(e) => setReason(e.target.value)}
+            className="w-full border border-hud/30 bg-background/40 px-3 py-2 font-mono text-sm text-cream outline-none placeholder:text-cream-dim/40 focus:border-hud"
+          />
+        </label>
+
+        {err && (
+          <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.25em] text-destructive">
+            ✕ {err}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={busy || !start}
+          className="btn-deploy mt-6 w-full justify-center disabled:opacity-40"
+        >
+          <span className="font-mono text-[10px] opacity-70">›››</span>
+          {busy ? "Rögzítés..." : "Zárás hozzáadása"}
+        </button>
+      </form>
+
+      <div className="border border-hud/20">
+        <div className="border-b border-hud/20 bg-surface/60 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.3em] text-hud">
+          Aktív zárások ({rows.length})
+        </div>
+        {loading ? (
+          <div className="p-8 text-center font-mono text-xs uppercase tracking-[0.3em] text-cream-dim">
+            // BETÖLTÉS...
+          </div>
+        ) : rows.length === 0 ? (
+          <div className="p-8 text-center font-mono text-xs uppercase tracking-[0.3em] text-cream-dim">
+            Nincs aktív zárás
+          </div>
+        ) : (
+          <ul>
+            {rows.map((r) => (
+              <li
+                key={r.id}
+                className="flex flex-wrap items-center justify-between gap-3 border-t border-hud/10 px-4 py-3 first:border-t-0"
+              >
+                <div>
+                  <div className="font-mono text-sm text-cream">
+                    {r.start_date === r.end_date
+                      ? fmt(r.start_date)
+                      : `${fmt(r.start_date)} — ${fmt(r.end_date)}`}
+                  </div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim">
+                    {r.reason || "— nincs megjegyzés —"}
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleDelete(r.id)}
+                  className="border border-destructive/50 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.3em] text-destructive transition hover:bg-destructive/10"
+                >
+                  Törlés
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
 }

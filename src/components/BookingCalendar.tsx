@@ -58,6 +58,7 @@ export function BookingCalendar() {
   const fetchAvailability = useServerFn(getMonthAvailability);
 
   const [booked, setBooked] = useState<Record<string, string[]>>({});
+  const [blocked, setBlocked] = useState<Record<string, string | null>>({});
   const [availLoading, setAvailLoading] = useState(true);
 
   const loadAvailability = useCallback(
@@ -66,8 +67,10 @@ export function BookingCalendar() {
       try {
         const res = await fetchAvailability({ data: { year, month: month + 1 } });
         setBooked(res.booked ?? {});
+        setBlocked(res.blocked ?? {});
       } catch {
         setBooked({});
+        setBlocked({});
       } finally {
         setAvailLoading(false);
       }
@@ -83,6 +86,7 @@ export function BookingCalendar() {
     () => (selected ? (booked[dateKey(selected)] ?? []) : []),
     [booked, selected],
   );
+
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const phoneValid = phone.trim().replace(/[^\d]/g, "").length >= 7;
@@ -136,14 +140,16 @@ export function BookingCalendar() {
     setSlot(null);
   };
 
-  // Real availability based on active bookings
+  // Real availability based on active bookings + admin closures
   const dayStatus = (d: Date) => {
     if (d < today) return "past";
+    if (dateKey(d) in blocked) return "closed";
     const taken = booked[dateKey(d)]?.length ?? 0;
     if (taken >= TIME_SLOTS.length) return "full";
     if (taken > 0) return "hot";
     return "open";
   };
+
 
   // Slots earlier than the current hour are expired (today only)
   const isPastSlot = (d: Date | null, t: string) => {
@@ -241,12 +247,20 @@ export function BookingCalendar() {
                 const st = dayStatus(c.date);
                 const sel = isSelected(c.date);
                 const isToday = c.date.getTime() === today.getTime();
-                const disabled = st === "past" || st === "full";
+                const disabled = st === "past" || st === "full" || st === "closed";
+                const closedReason = st === "closed" ? blocked[dateKey(c.date)] : null;
                 return (
                   <button
                     key={i}
                     disabled={disabled}
                     data-hover={!disabled || undefined}
+                    title={
+                      st === "closed"
+                        ? closedReason
+                          ? `Zárva · ${closedReason}`
+                          : "Zárva"
+                        : undefined
+                    }
                     onClick={() => {
                       setSelected(c.date);
                       setSlot(null);
@@ -255,9 +269,11 @@ export function BookingCalendar() {
                       "group relative aspect-square border font-mono text-sm transition-all",
                       sel
                         ? "border-hud bg-hud text-background shadow-[0_0_20px_-4px_rgba(244,161,29,0.7)]"
-                        : disabled
-                          ? "cursor-not-allowed border-hud/10 bg-background/30 text-cream-dim/30"
-                          : "border-hud/25 bg-background/40 text-cream hover:border-hud hover:bg-hud/10",
+                        : st === "closed"
+                          ? "cursor-not-allowed border-destructive/30 bg-destructive/5 text-cream-dim/40"
+                          : disabled
+                            ? "cursor-not-allowed border-hud/10 bg-background/30 text-cream-dim/30"
+                            : "border-hud/25 bg-background/40 text-cream hover:border-hud hover:bg-hud/10",
                     ].join(" ")}
                   >
                     {/* corner ticks on selected */}
@@ -272,8 +288,13 @@ export function BookingCalendar() {
                     <span className="absolute left-1 top-1 text-[10px] opacity-70">
                       {c.day}
                     </span>
+                    {st === "closed" && (
+                      <span className="absolute inset-x-0 bottom-0.5 font-mono text-[7px] uppercase tracking-[0.15em] text-destructive/70">
+                        Zárva
+                      </span>
+                    )}
                     {/* status indicator */}
-                    {!sel && st !== "past" && (
+                    {!sel && st !== "past" && st !== "closed" && (
                       <span
                         className={[
                           "absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full",
@@ -302,6 +323,10 @@ export function BookingCalendar() {
               <span className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-cream-dim/40" /> Megtelt
               </span>
+              <span className="flex items-center gap-2">
+                <span className="h-3 w-3 border border-destructive/40 bg-destructive/10" /> Zárva
+              </span>
+
               <span className="flex items-center gap-2">
                 <span className="h-3 w-3 border border-hud/60" /> Ma
               </span>
