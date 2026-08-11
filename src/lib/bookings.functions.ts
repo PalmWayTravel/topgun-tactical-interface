@@ -280,3 +280,70 @@ export const cancelBooking = createServerFn({ method: "POST" })
     }
     return { ok: true as const };
   });
+
+// ===================== ZÁRVA TARTÁS (blocked dates) =====================
+
+const dateStr = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+
+export const listBlockedDates = createServerFn({ method: "GET" }).handler(async () => {
+  await requireAdmin();
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const todayKey = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Budapest",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+  const { data, error } = await supabaseAdmin
+    .from("blocked_dates")
+    .select("*")
+    .gte("end_date", todayKey)
+    .order("start_date", { ascending: true });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
+
+export const addBlockedDate = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) =>
+    z
+      .object({
+        start_date: dateStr,
+        end_date: dateStr,
+        reason: z.string().trim().max(200).nullable().optional(),
+      })
+      .refine((v) => v.end_date >= v.start_date, {
+        message: "A záró dátum nem lehet korábbi a kezdő dátumnál.",
+      })
+      .parse(data),
+  )
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await supabaseAdmin
+      .from("blocked_dates")
+      .insert({
+        start_date: data.start_date,
+        end_date: data.end_date,
+        reason: data.reason?.trim() ? data.reason.trim() : null,
+      })
+      .select("*")
+      .single();
+    if (error) {
+      console.error("addBlockedDate error", error);
+      throw new Error("Nem sikerült rögzíteni a zárást.");
+    }
+    return row;
+  });
+
+export const deleteBlockedDate = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("blocked_dates").delete().eq("id", data.id);
+    if (error) {
+      console.error("deleteBlockedDate error", error);
+      throw new Error("Nem sikerült törölni a zárást.");
+    }
+    return { ok: true as const };
+  });
