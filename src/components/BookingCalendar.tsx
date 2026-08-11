@@ -140,14 +140,16 @@ export function BookingCalendar() {
     setSlot(null);
   };
 
-  // Real availability based on active bookings
+  // Real availability based on active bookings + admin closures
   const dayStatus = (d: Date) => {
     if (d < today) return "past";
+    if (dateKey(d) in blocked) return "closed";
     const taken = booked[dateKey(d)]?.length ?? 0;
     if (taken >= TIME_SLOTS.length) return "full";
     if (taken > 0) return "hot";
     return "open";
   };
+
 
   // Slots earlier than the current hour are expired (today only)
   const isPastSlot = (d: Date | null, t: string) => {
