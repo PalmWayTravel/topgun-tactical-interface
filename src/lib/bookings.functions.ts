@@ -48,6 +48,7 @@ export const getMonthAvailability = createServerFn({ method: "GET" })
     const start = `${data.year}-${String(data.month).padStart(2, "0")}-01`;
     const endDate = new Date(Date.UTC(data.year, data.month, 1));
     const end = endDate.toISOString().slice(0, 10);
+    const lastDay = new Date(Date.UTC(data.year, data.month, 0)).toISOString().slice(0, 10);
     const { data: rows, error } = await supabaseAdmin
       .from("bookings")
       .select("booking_date, time_slot")
@@ -63,8 +64,30 @@ export const getMonthAvailability = createServerFn({ method: "GET" })
       const key = r.booking_date as string;
       (booked[key] ??= []).push(r.time_slot as string);
     }
-    return { booked };
+
+    // Closed (blocked) days overlapping this month
+    const { data: blocks, error: blockErr } = await supabaseAdmin
+      .from("blocked_dates")
+      .select("start_date, end_date, reason")
+      .lte("start_date", lastDay)
+      .gte("end_date", start);
+    if (blockErr) {
+      console.error("getMonthAvailability blocked error", blockErr);
+      throw new Error("Nem sikerült betölteni a foglaltságot.");
+    }
+    const blocked: Record<string, string | null> = {};
+    for (const b of blocks ?? []) {
+      const cur = new Date(`${b.start_date}T00:00:00Z`);
+      const last = new Date(`${b.end_date}T00:00:00Z`);
+      while (cur <= last) {
+        const key = cur.toISOString().slice(0, 10);
+        if (key >= start && key <= lastDay) blocked[key] = (b.reason as string | null) ?? null;
+        cur.setUTCDate(cur.getUTCDate() + 1);
+      }
+    }
+    return { booked, blocked };
   });
+
 
 export const createBooking = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => bookingSchema.parse(data))
