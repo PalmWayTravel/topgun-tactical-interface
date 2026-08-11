@@ -3,13 +3,17 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { HudCorners } from "@/components/HudCorners";
 import {
+  addBlockedDate,
   adminLogin,
   adminLogout,
   adminStatus,
+  deleteBlockedDate,
+  listBlockedDates,
   listBookings,
   listFeedback,
   updateBookingStatus,
 } from "@/lib/bookings.functions";
+
 
 const STATUS_OPTIONS = [
   { value: "pending", label: "Függőben" },
