@@ -154,7 +154,7 @@ function AdminPage() {
 function AdminConsole({ onLogout }: { onLogout: () => void }) {
   const fetchBookings = useServerFn(listBookings);
   const fetchFeedback = useServerFn(listFeedback);
-  const [tab, setTab] = useState<"bookings" | "feedback">("bookings");
+  const [tab, setTab] = useState<"bookings" | "feedback" | "closures">("bookings");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
