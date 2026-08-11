@@ -189,8 +189,8 @@ function AdminConsole({ onLogout }: { onLogout: () => void }) {
       </header>
 
       <div className="px-6 py-6">
-        <div className="mb-6 flex gap-2">
-          {(["bookings", "feedback"] as const).map((t) => (
+        <div className="mb-6 flex flex-wrap gap-2">
+          {(["bookings", "feedback", "closures"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -201,12 +201,18 @@ function AdminConsole({ onLogout }: { onLogout: () => void }) {
                   : "border-hud/30 text-cream-dim hover:border-hud/60 hover:text-cream",
               ].join(" ")}
             >
-              {t === "bookings" ? `Foglalások (${bookings.length})` : `Értékelések (${feedback.length})`}
+              {t === "bookings"
+                ? `Foglalások (${bookings.length})`
+                : t === "feedback"
+                  ? `Értékelések (${feedback.length})`
+                  : "Zárva tartás"}
             </button>
           ))}
         </div>
 
-        {loading ? (
+        {tab === "closures" ? (
+          <ClosuresPanel />
+        ) : loading ? (
           <div className="font-mono text-xs uppercase tracking-[0.3em] text-cream-dim">
             // BETÖLTÉS...
           </div>
@@ -220,6 +226,7 @@ function AdminConsole({ onLogout }: { onLogout: () => void }) {
         ) : (
           <FeedbackTable rows={feedback} />
         )}
+
       </div>
     </main>
   );
