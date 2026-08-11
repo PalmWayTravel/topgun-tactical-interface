@@ -107,6 +107,22 @@ export const createBooking = createServerFn({ method: "POST" })
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
+    const { data: blocked, error: blockedErr } = await supabaseAdmin
+      .from("blocked_dates")
+      .select("id")
+      .lte("start_date", data.booking_date)
+      .gte("end_date", data.booking_date)
+      .limit(1);
+    if (blockedErr) {
+      console.error("createBooking blocked check error", blockedErr);
+      throw new Error("Nem sikerült rögzíteni a foglalást.");
+    }
+    if (blocked && blocked.length > 0) {
+      throw new Error("Ez az időszak jelenleg zárva tart, kérlek válassz másik dátumot.");
+    }
+
+
+
     const { data: taken, error: checkErr } = await supabaseAdmin
       .from("bookings")
       .select("id")
