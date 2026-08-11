@@ -324,6 +324,10 @@ export function BookingCalendar() {
                 <span className="h-1.5 w-1.5 rounded-full bg-cream-dim/40" /> Megtelt
               </span>
               <span className="flex items-center gap-2">
+                <span className="h-3 w-3 border border-destructive/40 bg-destructive/10" /> Zárva
+              </span>
+
+              <span className="flex items-center gap-2">
                 <span className="h-3 w-3 border border-hud/60" /> Ma
               </span>
             </div>
