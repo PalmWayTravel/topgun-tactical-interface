@@ -247,12 +247,20 @@ export function BookingCalendar() {
                 const st = dayStatus(c.date);
                 const sel = isSelected(c.date);
                 const isToday = c.date.getTime() === today.getTime();
-                const disabled = st === "past" || st === "full";
+                const disabled = st === "past" || st === "full" || st === "closed";
+                const closedReason = st === "closed" ? blocked[dateKey(c.date)] : null;
                 return (
                   <button
                     key={i}
                     disabled={disabled}
                     data-hover={!disabled || undefined}
+                    title={
+                      st === "closed"
+                        ? closedReason
+                          ? `Zárva · ${closedReason}`
+                          : "Zárva"
+                        : undefined
+                    }
                     onClick={() => {
                       setSelected(c.date);
                       setSlot(null);
@@ -261,9 +269,11 @@ export function BookingCalendar() {
                       "group relative aspect-square border font-mono text-sm transition-all",
                       sel
                         ? "border-hud bg-hud text-background shadow-[0_0_20px_-4px_rgba(244,161,29,0.7)]"
-                        : disabled
-                          ? "cursor-not-allowed border-hud/10 bg-background/30 text-cream-dim/30"
-                          : "border-hud/25 bg-background/40 text-cream hover:border-hud hover:bg-hud/10",
+                        : st === "closed"
+                          ? "cursor-not-allowed border-destructive/30 bg-destructive/5 text-cream-dim/40"
+                          : disabled
+                            ? "cursor-not-allowed border-hud/10 bg-background/30 text-cream-dim/30"
+                            : "border-hud/25 bg-background/40 text-cream hover:border-hud hover:bg-hud/10",
                     ].join(" ")}
                   >
                     {/* corner ticks on selected */}
@@ -278,8 +288,13 @@ export function BookingCalendar() {
                     <span className="absolute left-1 top-1 text-[10px] opacity-70">
                       {c.day}
                     </span>
+                    {st === "closed" && (
+                      <span className="absolute inset-x-0 bottom-0.5 font-mono text-[7px] uppercase tracking-[0.15em] text-destructive/70">
+                        Zárva
+                      </span>
+                    )}
                     {/* status indicator */}
-                    {!sel && st !== "past" && (
+                    {!sel && st !== "past" && st !== "closed" && (
                       <span
                         className={[
                           "absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full",
@@ -292,6 +307,9 @@ export function BookingCalendar() {
                     {isToday && !sel && (
                       <span className="absolute inset-0 border border-hud/60" />
                     )}
+                  </button>
+                );
+
                   </button>
                 );
               })}
