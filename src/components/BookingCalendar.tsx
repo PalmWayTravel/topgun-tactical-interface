@@ -309,9 +309,6 @@ export function BookingCalendar() {
                     )}
                   </button>
                 );
-
-                  </button>
-                );
               })}
             </div>
 
