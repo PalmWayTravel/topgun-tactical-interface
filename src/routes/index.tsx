@@ -249,7 +249,7 @@ function Packages() {
       tag: "Junior bevetés",
       price: "5 000",
       unit: "Ft / fő",
-      perks: ["100 golyó", "Gyerek marker", "Teljes felszerelés", "Bíró + brief"],
+      perks: ["100 golyó", "Gyerek marker", "Teljes felszerelés", "Játékmester"],
       featured: false,
     },
     {
@@ -258,7 +258,7 @@ function Packages() {
       tag: "Klasszikus",
       price: "7 000",
       unit: "Ft / fő",
-      perks: ["200 golyó", "Teljes felszerelés", "Bíró + brief", "Több játékmód"],
+      perks: ["200 golyó", "Teljes felszerelés", "Játékmester", "Több játékmód"],
       featured: true,
     },
     {
@@ -267,7 +267,7 @@ function Packages() {
       tag: "Hosszú bevetés",
       price: "9 000",
       unit: "Ft / fő",
-      perks: ["500 golyó", "Teljes felszerelés", "Bíró + brief", "Hosszabb játékidő"],
+      perks: ["500 golyó", "Teljes felszerelés", "Játékmester", "Hosszabb játékidő"],
       featured: false,
     },
   ];
