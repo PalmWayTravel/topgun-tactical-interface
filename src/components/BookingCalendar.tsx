@@ -58,6 +58,7 @@ export function BookingCalendar() {
   const fetchAvailability = useServerFn(getMonthAvailability);
 
   const [booked, setBooked] = useState<Record<string, string[]>>({});
+  const [blocked, setBlocked] = useState<Record<string, string | null>>({});
   const [availLoading, setAvailLoading] = useState(true);
 
   const loadAvailability = useCallback(
@@ -66,8 +67,10 @@ export function BookingCalendar() {
       try {
         const res = await fetchAvailability({ data: { year, month: month + 1 } });
         setBooked(res.booked ?? {});
+        setBlocked(res.blocked ?? {});
       } catch {
         setBooked({});
+        setBlocked({});
       } finally {
         setAvailLoading(false);
       }
@@ -83,6 +86,7 @@ export function BookingCalendar() {
     () => (selected ? (booked[dateKey(selected)] ?? []) : []),
     [booked, selected],
   );
+
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const phoneValid = phone.trim().replace(/[^\d]/g, "").length >= 7;
