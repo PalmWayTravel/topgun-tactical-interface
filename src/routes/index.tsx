@@ -129,8 +129,8 @@ function Hero() {
       {/* HUD telemetry corners */}
       <div className="absolute left-8 top-24 hidden font-mono text-[10px] uppercase tracking-[0.25em] text-hud/80 md:block">
         <div className="animate-flicker">● SYS · ONLINE</div>
-        <div className="mt-1 text-cream-dim">N 47°29′ · E 19°02′</div>
-        <div className="mt-1 text-cream-dim">FIELD · 12.4 HA</div>
+        <div className="mt-1 text-cream-dim">NYÍRBÁTOR · HU</div>
+        <div className="mt-1 text-cream-dim">SECTOR · ACTIVE</div>
       </div>
       <div className="absolute right-8 top-24 hidden text-right font-mono text-[10px] uppercase tracking-[0.25em] text-hud/80 md:block">
         <div>SECTOR · TG-01</div>
@@ -534,11 +534,6 @@ function Location() {
 
 /* ---------------- REVIEWS ---------------- */
 function Reviews() {
-  const items = [
-    { n: "Bence T.", r: 5, t: "Brutál hangulat, profi szervezés. A legénybúcsú legjobb része." },
-    { n: "Anna K.", r: 5, t: "Céges csapatépítőnek tökéletes. Mindenki kiosztotta egymást." },
-    { n: "Márk P.", r: 5, t: "A gyerek szülinapra is királyság, külön junior pálya, animátor." },
-  ];
   return (
     <section id="reviews" className="relative overflow-hidden border-t border-hud/15 py-28">
       <Splatter seed={88} count={2} />
@@ -551,29 +546,23 @@ function Reviews() {
             Bevetési <span className="text-hud">jelentések</span>
           </h2>
         </Reveal>
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {items.map((rev, i) => (
-            <Reveal key={rev.n} delay={i * 120}>
-              <article data-hover className="hud-corners-4 relative h-full border border-hud/25 bg-surface/60 p-7">
-                <HudCorners />
-                <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim">
-                  <span>REC · 00{i + 1}</span>
-                  <span className="text-hud">{"★".repeat(rev.r)}</span>
-                </div>
-                <p className="mt-5 text-cream">"{rev.t}"</p>
-                <div className="mt-6 flex items-center gap-3 border-t border-hud/15 pt-4">
-                  <div className="grid h-9 w-9 place-items-center border border-hud/40 font-mono text-xs text-hud">
-                    {rev.n.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-mono text-sm text-cream">{rev.n}</div>
-                    <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim">Google Review</div>
-                  </div>
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal delay={280}>
+          <div className="mx-auto mt-12 max-w-2xl">
+            <article className="hud-corners-4 relative border border-hud/25 bg-surface/60 p-8 text-center sm:p-12">
+              <HudCorners />
+              <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-hud">STATUS · PENDING</div>
+              <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-cream">
+                Az első bevetési jelentések hamarosan érkeznek — legyél te az első, aki értékel!
+              </p>
+              <a
+                href="/ertekeles"
+                className="btn-ghost-hud mx-auto mt-8 inline-flex"
+              >
+                Értékelés beküldése
+              </a>
+            </article>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
