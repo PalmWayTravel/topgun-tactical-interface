@@ -191,7 +191,7 @@ function Briefing() {
         </Reveal>
         <Reveal delay={140}>
           <h2 className="font-display text-4xl font-bold uppercase leading-tight text-cream sm:text-6xl lg:text-7xl">
-            Itt nem játszol. <span className="text-hud">Bevetésen vagy.</span>
+            Készen állsz, hogy <span className="text-hud">élesben játssz?</span>
           </h2>
         </Reveal>
         <Reveal delay={300}>
