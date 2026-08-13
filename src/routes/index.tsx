@@ -129,8 +129,8 @@ function Hero() {
       {/* HUD telemetry corners */}
       <div className="absolute left-8 top-24 hidden font-mono text-[10px] uppercase tracking-[0.25em] text-hud/80 md:block">
         <div className="animate-flicker">● SYS · ONLINE</div>
-        <div className="mt-1 text-cream-dim">N 47°29′ · E 19°02′</div>
-        <div className="mt-1 text-cream-dim">FIELD · 12.4 HA</div>
+        <div className="mt-1 text-cream-dim">NYÍRBÁTOR · HU</div>
+        <div className="mt-1 text-cream-dim">SECTOR · ACTIVE</div>
       </div>
       <div className="absolute right-8 top-24 hidden text-right font-mono text-[10px] uppercase tracking-[0.25em] text-hud/80 md:block">
         <div>SECTOR · TG-01</div>
