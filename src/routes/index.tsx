@@ -547,20 +547,60 @@ function Reviews() {
           </h2>
         </Reveal>
         <Reveal delay={280}>
-          <div className="mx-auto mt-12 max-w-2xl">
-            <article className="hud-corners-4 relative border border-hud/25 bg-surface/60 p-8 text-center sm:p-12">
-              <HudCorners />
-              <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-hud">STATUS · PENDING</div>
-              <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-cream">
-                Az első bevetési jelentések hamarosan érkeznek — legyél te az első, aki értékel!
-              </p>
-              <a
-                href="/ertekeles"
-                className="btn-ghost-hud mx-auto mt-8 inline-flex"
-              >
-                Értékelés beküldése
-              </a>
-            </article>
+          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+            {[
+              {
+                name: "József Iván",
+                rating: 5,
+                text: "Életében először paintballozott, és rögtön nagyon megtetszett neki — kiemelte, hogy egy kedves és hozzáértő csapat fogadta őket, és mindenkinek csak ajánlani tudja az élményt.",
+              },
+              {
+                name: "József Huri",
+                rating: 5,
+                text: null,
+              },
+              {
+                name: "Fanni Zajácz",
+                rating: 5,
+                text: null,
+              },
+            ].map((review, i) => (
+              <Reveal key={review.name} delay={i * 120}>
+                <article className="hud-corners-4 relative flex h-full flex-col border border-hud/25 bg-surface/60 p-8 transition-all duration-300 hover:-translate-y-1 hover:border-hud/60">
+                  <HudCorners />
+                  <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim">
+                    <span>Google</span>
+                    <span className="text-hud">● Verified</span>
+                  </div>
+                  <div className="mt-5 flex gap-1">
+                    {Array.from({ length: review.rating }).map((_, si) => (
+                      <svg
+                        key={si}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="h-5 w-5 text-hud"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <h3 className="mt-4 font-display text-xl font-bold uppercase text-cream">{review.name}</h3>
+                  {review.text ? (
+                    <blockquote className="mt-5 flex-1 border-l-2 border-hud/40 pl-4 text-sm leading-relaxed text-cream/90">
+                      „{review.text}”
+                    </blockquote>
+                  ) : (
+                    <div className="mt-5 flex-1">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-cream-dim">
+                        Csillagos értékelés
+                      </span>
+                    </div>
+                  )}
+                </article>
+              </Reveal>
+            ))}
           </div>
         </Reveal>
       </div>
