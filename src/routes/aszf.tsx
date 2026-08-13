@@ -37,7 +37,8 @@ function AszfPage() {
       <H2>1. Szolgáltató adatai</H2>
       <P>Név: Top Gun Paintball</P>
       <P>Székhely / a szolgáltatás helye: Nyírbátor, Bakonyikert, 4300</P>
-      <P>Nyilvántartási szám / adószám: [PÓTLANDÓ – az ügyféltől beszerzendő]</P>
+      <P>Nyilvántartási szám: 57929044</P>
+      <P>Adószám: 59882617-1-35</P>
       <P>E-mail: paintballtopgun@gmail.com</P>
       <P>Telefon: +36 70 603 3929 / +36 70 603 4088</P>
 
