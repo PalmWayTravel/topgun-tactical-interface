@@ -196,8 +196,9 @@ function Briefing() {
         </Reveal>
         <Reveal delay={300}>
           <p className="mt-8 max-w-2xl font-sans text-base leading-relaxed text-cream-dim md:text-lg">
-            12 hektár tematikus terep, falusi rom, erdei sávok, bunker mező. Profi felszerelés,
-            bemelegítés, taktikai brief, jegyző bíró. Te csak megnyered.
+            Roncsautó, gumibarikádok, rejtett fedezékek, ez nem szimuláció, ez a valódi terep.
+            Felkészítünk rendesen: profi felszerelés, alapos eligazítás, és egy Játékmester, aki
+            ott van veletek az egész bevetés alatt. Innentől már csak rajtatok múlik, ki jön ki győztesen.
           </p>
         </Reveal>
         <Reveal delay={460}>
