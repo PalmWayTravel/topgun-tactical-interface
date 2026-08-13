@@ -206,7 +206,7 @@ function Briefing() {
             {[
               ["01", "Brief", "Szabályok és csapatok"],
               ["02", "Deploy", "Felszerelés, bemelegítés"],
-              ["03", "Engage", "Több játékmód a tereppen"],
+              ["03", "Engage", "Több játékmód a terepen"],
             ].map(([n, t, d]) => (
               <div key={n} className="bg-background p-6">
                 <div className="font-mono text-xs text-hud">{n}</div>
