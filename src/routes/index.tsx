@@ -80,6 +80,14 @@ function Header() {
 
 /* ---------------- HERO ---------------- */
 function Hero() {
+  const isMobile = useIsMobile();
+  const [showVideo, setShowVideo] = useState(false);
+  useEffect(() => {
+    // Csak kliens oldalon, első festés után töltsük a videót
+    const t = window.setTimeout(() => setShowVideo(true), 400);
+    return () => window.clearTimeout(t);
+  }, []);
+  const videoSrc = isMobile ? heroVideoMobile : heroVideo;
   return (
     <section id="top" className="relative isolate h-[100svh] min-h-[640px] w-full overflow-hidden hud-scanlines">
       {/* Background video (poster = static fallback) */}
