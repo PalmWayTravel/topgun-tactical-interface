@@ -5,8 +5,10 @@ import { Crosshair } from "@/components/Crosshair";
 import { Reveal } from "@/components/Reveal";
 import { Splatter } from "@/components/Splatter";
 
+import { useIsMobile } from "@/hooks/use-mobile";
 import heroFallback from "@/assets/hero-fallback.jpg";
 import heroVideo from "@/assets/topgun-hero.mp4";
+import heroVideoMobile from "@/assets/topgun-hero-mobile.mp4";
 import logoAsset from "@/assets/topgun-logo.png";
 
 import squad1Asset from "@/assets/real-squad-1.jpg";
