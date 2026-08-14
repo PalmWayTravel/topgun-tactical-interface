@@ -5,8 +5,10 @@ import { Crosshair } from "@/components/Crosshair";
 import { Reveal } from "@/components/Reveal";
 import { Splatter } from "@/components/Splatter";
 
+import { useIsMobile } from "@/hooks/use-mobile";
 import heroFallback from "@/assets/hero-fallback.jpg";
 import heroVideo from "@/assets/topgun-hero.mp4";
+import heroVideoMobile from "@/assets/topgun-hero-mobile.mp4";
 import logoAsset from "@/assets/topgun-logo.png";
 
 import squad1Asset from "@/assets/real-squad-1.jpg";
@@ -80,21 +82,40 @@ function Header() {
 
 /* ---------------- HERO ---------------- */
 function Hero() {
+  const isMobile = useIsMobile();
+  const [showVideo, setShowVideo] = useState(false);
+  useEffect(() => {
+    // Csak kliens oldalon, első festés után töltsük a videót
+    const t = window.setTimeout(() => setShowVideo(true), 400);
+    return () => window.clearTimeout(t);
+  }, []);
+  const videoSrc = isMobile ? heroVideoMobile : heroVideo;
+  const playVideo = showVideo && !isMobile;
   return (
     <section id="top" className="relative isolate h-[100svh] min-h-[640px] w-full overflow-hidden hud-scanlines">
       {/* Background video (poster = static fallback) */}
       <div className="absolute inset-0">
-        <video
-          src={heroVideo}
-          poster={heroFallback}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
+        <img
+          src={heroFallback}
+          alt=""
           aria-hidden
           className="h-full w-full object-cover opacity-70"
+          fetchPriority="high"
         />
+        {showVideo && (
+          <video
+            key={videoSrc}
+            src={videoSrc}
+            poster={heroFallback}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover opacity-70"
+          />
+        )}
       </div>
 
       {/* Animated moving smoke / amber wash */}
