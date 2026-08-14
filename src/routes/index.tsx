@@ -90,6 +90,7 @@ function Hero() {
     return () => window.clearTimeout(t);
   }, []);
   const videoSrc = isMobile ? heroVideoMobile : heroVideo;
+  const playVideo = showVideo && !isMobile;
   return (
     <section id="top" className="relative isolate h-[100svh] min-h-[640px] w-full overflow-hidden hud-scanlines">
       {/* Background video (poster = static fallback) */}
