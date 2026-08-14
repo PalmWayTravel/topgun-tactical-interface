@@ -84,17 +84,27 @@ function Hero() {
     <section id="top" className="relative isolate h-[100svh] min-h-[640px] w-full overflow-hidden hud-scanlines">
       {/* Background video (poster = static fallback) */}
       <div className="absolute inset-0">
-        <video
-          src={heroVideo}
-          poster={heroFallback}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
+        <img
+          src={heroFallback}
+          alt=""
           aria-hidden
           className="h-full w-full object-cover opacity-70"
+          fetchPriority="high"
         />
+        {showVideo && (
+          <video
+            key={videoSrc}
+            src={videoSrc}
+            poster={heroFallback}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover opacity-70"
+          />
+        )}
       </div>
 
       {/* Animated moving smoke / amber wash */}
