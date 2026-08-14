@@ -6,15 +6,15 @@ import { Reveal } from "@/components/Reveal";
 import { Splatter } from "@/components/Splatter";
 
 import heroFallback from "@/assets/hero-fallback.jpg";
-import heroVideo from "@/assets/topgun-hero.mp4.asset.json";
-import logoAsset from "@/assets/topgun-logo.png.asset.json";
+import heroVideo from "@/assets/topgun-hero.mp4";
+import logoAsset from "@/assets/topgun-logo.png";
 
-import squad1Asset from "@/assets/real-squad-1.jpg.asset.json";
-import squad2Asset from "@/assets/real-squad-2.jpg.asset.json";
+import squad1Asset from "@/assets/real-squad-1.jpg";
+import squad2Asset from "@/assets/real-squad-2.jpg";
 import g3 from "@/assets/gallery-3.jpg";
-import gear1Asset from "@/assets/real-gear-1.jpg.asset.json";
-import gear2Asset from "@/assets/real-gear-2.jpg.asset.json";
-import kidsAsset from "@/assets/real-kids.jpg.asset.json";
+import gear1Asset from "@/assets/real-gear-1.jpg";
+import gear2Asset from "@/assets/real-gear-2.jpg";
+import kidsAsset from "@/assets/real-kids.jpg";
 import { BookingCalendar } from "@/components/BookingCalendar";
 
 export const Route = createFileRoute("/")({
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
 function Logo({ className = "", size = "h-10" }: { className?: string; size?: string }) {
   return (
     <img
-      src={logoAsset.url}
+      src={logoAsset}
       alt="Top Gun Paintball logó"
       className={`${size} w-auto select-none ${className}`}
       draggable={false}
@@ -85,7 +85,7 @@ function Hero() {
       {/* Background video (poster = static fallback) */}
       <div className="absolute inset-0">
         <video
-          src={heroVideo.url}
+          src={heroVideo}
           poster={heroFallback}
           autoPlay
           loop
@@ -351,11 +351,11 @@ function Packages() {
 /* ---------------- GALLERY ---------------- */
 function Gallery() {
   const imgs = [
-    { src: squad1Asset.url, code: "IMG_001", label: "Squad" },
-    { src: squad2Asset.url, code: "IMG_002", label: "Team Ops" },
+    { src: squad1Asset, code: "IMG_001", label: "Squad" },
+    { src: squad2Asset, code: "IMG_002", label: "Team Ops" },
     { src: g3, code: "IMG_003", label: "Sunset Ops" },
-    { src: gear1Asset.url, code: "IMG_004", label: "Gear" },
-    { src: gear2Asset.url, code: "IMG_005", label: "Marker" },
+    { src: gear1Asset, code: "IMG_004", label: "Gear" },
+    { src: gear2Asset, code: "IMG_005", label: "Marker" },
   ];
   return (
     <section id="gallery" className="relative overflow-hidden border-t border-hud/15 py-28">
@@ -417,7 +417,7 @@ function Kids() {
           <figure className="hud-corners-4 relative overflow-hidden border border-hud/25">
             <HudCorners />
             <img
-              src={kidsAsset.url}
+              src={kidsAsset}
               alt="Gyerek paintball csapat"
               loading="lazy"
               width={1280}
