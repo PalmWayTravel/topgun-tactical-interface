@@ -9,31 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LemondasRouteImport } from './routes/lemondas'
-import { Route as ErtekelesRouteImport } from './routes/ertekeles'
-import { Route as AszfRouteImport } from './routes/aszf'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AdatkezelesRouteImport } from './routes/adatkezeles'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdatkezelesRouteImport } from './routes/adatkezeles'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AszfRouteImport } from './routes/aszf'
+import { Route as ErtekelesRouteImport } from './routes/ertekeles'
+import { Route as LemondasRouteImport } from './routes/lemondas'
 
-const LemondasRoute = LemondasRouteImport.update({
-  id: '/lemondas',
-  path: '/lemondas',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ErtekelesRoute = ErtekelesRouteImport.update({
-  id: '/ertekeles',
-  path: '/ertekeles',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AszfRoute = AszfRouteImport.update({
-  id: '/aszf',
-  path: '/aszf',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdatkezelesRoute = AdatkezelesRouteImport.update({
@@ -41,9 +26,24 @@ const AdatkezelesRoute = AdatkezelesRouteImport.update({
   path: '/adatkezeles',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AszfRoute = AszfRouteImport.update({
+  id: '/aszf',
+  path: '/aszf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ErtekelesRoute = ErtekelesRouteImport.update({
+  id: '/ertekeles',
+  path: '/ertekeles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LemondasRoute = LemondasRouteImport.update({
+  id: '/lemondas',
+  path: '/lemondas',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -75,12 +75,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/adatkezeles'
-    | '/admin'
-    | '/aszf'
-    | '/ertekeles'
-    | '/lemondas'
+    '/' | '/adatkezeles' | '/admin' | '/aszf' | '/ertekeles' | '/lemondas'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/adatkezeles' | '/admin' | '/aszf' | '/ertekeles' | '/lemondas'
   id:
@@ -104,32 +99,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/lemondas': {
-      id: '/lemondas'
-      path: '/lemondas'
-      fullPath: '/lemondas'
-      preLoaderRoute: typeof LemondasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ertekeles': {
-      id: '/ertekeles'
-      path: '/ertekeles'
-      fullPath: '/ertekeles'
-      preLoaderRoute: typeof ErtekelesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/aszf': {
-      id: '/aszf'
-      path: '/aszf'
-      fullPath: '/aszf'
-      preLoaderRoute: typeof AszfRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/adatkezeles': {
@@ -139,11 +113,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdatkezelesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aszf': {
+      id: '/aszf'
+      path: '/aszf'
+      fullPath: '/aszf'
+      preLoaderRoute: typeof AszfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ertekeles': {
+      id: '/ertekeles'
+      path: '/ertekeles'
+      fullPath: '/ertekeles'
+      preLoaderRoute: typeof ErtekelesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lemondas': {
+      id: '/lemondas'
+      path: '/lemondas'
+      fullPath: '/lemondas'
+      preLoaderRoute: typeof LemondasRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

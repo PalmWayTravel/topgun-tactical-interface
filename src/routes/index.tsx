@@ -6,17 +6,17 @@ import { Reveal } from "@/components/Reveal";
 import { Splatter } from "@/components/Splatter";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import heroFallback from "@/assets/hero-fallback.jpg";
+import heroFallback from "@/assets/hero-fallback.webp";
 import heroVideo from "@/assets/topgun-hero.mp4";
 import heroVideoMobile from "@/assets/topgun-hero-mobile.mp4";
 import logoAsset from "@/assets/topgun-logo.png";
 
-import squad1Asset from "@/assets/real-squad-1.jpg";
-import squad2Asset from "@/assets/real-squad-2.jpg";
-import g3 from "@/assets/gallery-3.jpg";
-import gear1Asset from "@/assets/real-gear-1.jpg";
-import gear2Asset from "@/assets/real-gear-2.jpg";
-import kidsAsset from "@/assets/real-kids.jpg";
+import squad1Asset from "@/assets/real-squad-1.webp";
+import squad2Asset from "@/assets/real-squad-2.webp";
+import g3 from "@/assets/gallery-3.webp";
+import gear1Asset from "@/assets/real-gear-1.webp";
+import gear2Asset from "@/assets/real-gear-2.webp";
+import kidsAsset from "@/assets/real-kids.webp";
 import { BookingCalendar } from "@/components/BookingCalendar";
 
 export const Route = createFileRoute("/")({
@@ -29,6 +29,8 @@ function Logo({ className = "", size = "h-10" }: { className?: string; size?: st
     <img
       src={logoAsset}
       alt="Top Gun Paintball logó"
+      width={800}
+      height={578}
       className={`${size} w-auto select-none ${className}`}
       draggable={false}
     />
@@ -99,6 +101,8 @@ function Hero() {
           src={heroFallback}
           alt=""
           aria-hidden
+          width={1920}
+          height={1080}
           className="h-full w-full object-cover opacity-70"
           fetchPriority="high"
         />
