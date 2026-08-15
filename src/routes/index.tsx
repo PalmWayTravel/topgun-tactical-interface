@@ -102,7 +102,7 @@ function Hero() {
           className="h-full w-full object-cover opacity-70"
           fetchPriority="high"
         />
-        {showVideo && (
+        {playVideo && (
           <video
             key={videoSrc}
             src={videoSrc}

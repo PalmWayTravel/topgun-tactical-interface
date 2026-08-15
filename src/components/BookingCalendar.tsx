@@ -447,7 +447,7 @@ export function BookingCalendar() {
               </div>
               <input
                 type="range"
-                min={4}
+                min={6}
                 max={40}
                 step={1}
                 value={squad}
@@ -455,7 +455,7 @@ export function BookingCalendar() {
                 className="hud-range w-full"
               />
               <div className="mt-1 flex justify-between font-mono text-[9px] uppercase tracking-[0.3em] text-cream-dim">
-                <span>4</span><span>20</span><span>40</span>
+                <span>6</span><span>20</span><span>40</span>
               </div>
             </div>
 

@@ -33,7 +33,7 @@ const bookingSchema = z.object({
   booking_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   time_slot: z.string().min(1).max(20),
   package_code: z.string().min(1).max(20),
-  squad_size: z.number().int().min(1).max(200),
+  squad_size: z.number().int().min(6).max(200),
   name: z.string().trim().min(2).max(80),
   email: z.string().trim().email().max(120),
   phone: z.string().trim().min(6).max(30),
