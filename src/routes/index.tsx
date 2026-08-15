@@ -8,7 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import heroFallback from "@/assets/hero-fallback.webp";
 import heroVideo from "@/assets/topgun-hero.mp4";
 import heroVideoMobile from "@/assets/topgun-hero-mobile.mp4";
-import logoAsset from "@/assets/topgun-logo.png";
+import logoAsset from "@/assets/topgun-logo.webp";
 
 import squad1Asset from "@/assets/real-squad-1.webp";
 import squad2Asset from "@/assets/real-squad-2.webp";
@@ -16,7 +16,10 @@ import g3 from "@/assets/gallery-3.webp";
 import gear1Asset from "@/assets/real-gear-1.webp";
 import gear2Asset from "@/assets/real-gear-2.webp";
 import kidsAsset from "@/assets/real-kids.webp";
-import { BookingCalendar } from "@/components/BookingCalendar";
+import { lazy, Suspense } from "react";
+const BookingCalendar = lazy(() =>
+  import("@/components/BookingCalendar").then((m) => ({ default: m.BookingCalendar }))
+);
 
 export const Route = createFileRoute("/")({
   component: TopGunPage,
@@ -709,7 +712,9 @@ function TopGunPage() {
         <Kids />
         <Location />
         <Reviews />
-        <BookingCalendar />
+        <Suspense fallback={<div className="mx-auto max-w-6xl px-6 py-24 text-center font-mono text-xs uppercase tracking-[0.3em] text-hud">Foglalási modul betöltése…</div>}>
+          <BookingCalendar />
+        </Suspense>
         <Contact />
       </main>
       <Footer />
