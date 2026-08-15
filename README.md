@@ -32,7 +32,7 @@ EGÉRKÖVETŐ CÉLKERESZT
 
 Desktopon egyedi kurzor: egy finom narancs célkereszt, ami követi az egeret. Interaktív elemek (gombok, kártyák, képek) fölött a célkereszt "ráközelít" vagy aktiválódik. Mobilon ez nincs, ott marad a sima érintés.
 
-GÖRGETÉSRE INDULÓ ANIMÁCIÓK
+GÖRGETÉSRE INDULÓ ANIMÁCIÓK 
 
 A szekciók ne egyszerűen jelenjenek meg, hanem görgetésre "aktiválódjanak": finom belépés alulról, enyhe elmosódásból élesedés, és a HUD keretek, sarokjelek úgy rajzolódjanak ki, mintha egy rendszer töltené be őket. A háttérben több réteg mozogjon eltérő sebességgel (parallax): háttér, füst/HUD réteg, tartalom külön ütemben. Az interaktív elemeken finom glow és precíz, gyors mikroanimációk, akár enyhe glitch effekt hoverre. A kulcsszó a visszafogottság: az effektek erősítsék a hangulatot, ne tolakodjanak.
 
