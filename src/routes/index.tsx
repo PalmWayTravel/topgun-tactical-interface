@@ -571,7 +571,7 @@ function Reviews() {
               {
                 name: "József Iván",
                 rating: 5,
-                text: "Életében először paintballozott, és rögtön nagyon megtetszett neki — kiemelte, hogy egy kedves és hozzáértő csapat fogadta őket, és mindenkinek csak ajánlani tudja az élményt.",
+                text: "Életemben először paintballoztam, és tuti, hogy nem utoljára! Nagyon kedves és hozzáértő csapat fogadott minket, mindenkinek csak ajánlani tudom!",
               },
               {
                 name: "József Huri",
