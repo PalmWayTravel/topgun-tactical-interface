@@ -166,32 +166,24 @@ function Hero() {
 
       {/* Content */}
       <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col items-center justify-center px-6 text-center">
-        <Reveal>
-          <div className="label-mono mb-6 flex items-center gap-3">
-            <span className="inline-block h-px w-8 bg-hud" />
-            Mission Briefing · Hungary
-            <span className="inline-block h-px w-8 bg-hud" />
-          </div>
-        </Reveal>
-        <Reveal delay={180}>
-          <h1 className="font-display text-[15vw] font-bold uppercase leading-[0.85] tracking-tight text-cream sm:text-[12vw] md:text-[9rem] lg:text-[11rem]">
-            Top<span className="text-hud text-hud-glow">Gun</span>
-          </h1>
-        </Reveal>
-        <Reveal delay={360}>
-          <p className="mt-6 max-w-xl font-mono text-sm uppercase tracking-[0.18em] text-cream-dim">
-            Taktikai paintball pálya // Precíz csapatok // Filmszerű bevetések
-          </p>
-        </Reveal>
-        <Reveal delay={520}>
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
-            <a href="#booking" className="btn-deploy">
-              <span className="font-mono text-[10px] opacity-70">›››</span>
-              Deploy · Foglalás
-            </a>
-            <a href="#packages" className="btn-ghost-hud">Bevetési opciók</a>
-          </div>
-        </Reveal>
+        <div className="label-mono mb-6 flex items-center gap-3">
+          <span className="inline-block h-px w-8 bg-hud" />
+          Mission Briefing · Hungary
+          <span className="inline-block h-px w-8 bg-hud" />
+        </div>
+        <h1 className="font-display text-[15vw] font-bold uppercase leading-[0.85] tracking-tight text-cream sm:text-[12vw] md:text-[9rem] lg:text-[11rem]">
+          Top<span className="text-hud text-hud-glow">Gun</span>
+        </h1>
+        <p className="mt-6 max-w-xl font-mono text-sm uppercase tracking-[0.18em] text-cream-dim">
+          Taktikai paintball pálya // Precíz csapatok // Filmszerű bevetések
+        </p>
+        <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
+          <a href="#booking" className="btn-deploy">
+            <span className="font-mono text-[10px] opacity-70">›››</span>
+            Deploy · Foglalás
+          </a>
+          <a href="#packages" className="btn-ghost-hud">Bevetési opciók</a>
+        </div>
       </div>
 
       {/* Scroll indicator */}
