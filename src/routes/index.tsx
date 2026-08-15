@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { HudCorners } from "@/components/HudCorners";
 import { Crosshair } from "@/components/Crosshair";
 import { Reveal } from "@/components/Reveal";
-import { Splatter } from "@/components/Splatter";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import heroFallback from "@/assets/hero-fallback.webp";
@@ -131,7 +130,6 @@ function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/40 to-background" />
       {/* HUD grid */}
       <div className="pointer-events-none absolute inset-0 hud-grid opacity-50" aria-hidden />
-      <Splatter seed={11} count={2} />
       {/* HUD corners (full viewport) */}
       <div className="pointer-events-none absolute inset-6" aria-hidden>
         <div className="absolute left-0 top-0 h-6 w-6 border-l border-t border-hud" />
@@ -209,7 +207,6 @@ function Briefing() {
   return (
     <section id="briefing" className="relative overflow-hidden border-t border-hud/15 py-28">
       <div className="pointer-events-none absolute inset-0 hud-grid opacity-30" aria-hidden />
-      <Splatter seed={22} count={2} />
       <div className="relative mx-auto max-w-5xl px-6">
         <Reveal>
           <div className="label-mono mb-6">// FILE_001 — TOPGUN/BRIEFING.TXT</div>
@@ -250,7 +247,6 @@ function Briefing() {
 function Highlights() {
   return (
     <section className="relative overflow-hidden border-t border-hud/15 py-16">
-      <Splatter seed={33} count={1} />
       <div className="relative mx-auto max-w-5xl px-6">
         <div className="flex justify-center">
           <div className="hud-corners-4 relative inline-flex max-w-3xl items-center justify-center border-2 border-hud bg-surface/70 px-10 py-7 text-center shadow-[0_0_50px_-12px_oklch(0.78_0.17_65/0.55)]">
@@ -300,7 +296,6 @@ function Packages() {
   return (
     <section id="packages" className="relative overflow-hidden border-t border-hud/15 py-28">
       <div className="pointer-events-none absolute inset-0 hud-grid opacity-25" aria-hidden />
-      <Splatter seed={44} count={2} />
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// PKG · BEVETÉSI OPCIÓK</div>
@@ -384,7 +379,6 @@ function Gallery() {
   ];
   return (
     <section id="gallery" className="relative overflow-hidden border-t border-hud/15 py-28">
-      <Splatter seed={55} count={2} />
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// FEED · LIVE FRAMES</div>
@@ -436,7 +430,6 @@ function Gallery() {
 function Kids() {
   return (
     <section id="kids" className="relative overflow-hidden border-t border-hud/15 py-28">
-      <Splatter seed={66} count={2} />
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2">
         <Reveal>
           <figure className="hud-corners-4 relative overflow-hidden border border-hud/25">
@@ -491,7 +484,6 @@ function Kids() {
 function Location() {
   return (
     <section id="location" className="relative overflow-hidden border-t border-hud/15 py-28">
-      <Splatter seed={77} count={1} />
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// GEO · LOCATION LOCK</div>
@@ -561,7 +553,6 @@ function Location() {
 function Reviews() {
   return (
     <section id="reviews" className="relative overflow-hidden border-t border-hud/15 py-28">
-      <Splatter seed={88} count={2} />
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="label-mono mb-4">// FEEDBACK · VERIFIED · GOOGLE</div>
